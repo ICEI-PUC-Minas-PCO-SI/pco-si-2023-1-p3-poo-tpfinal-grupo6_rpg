@@ -1,1 +1,27 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=11226908&assignment_repo_type=AssignmentRepo)
+### Genero
+	Rouguelike
+	RPG
+	Turno
+
+### Tem que ter
+- Criação de personagens
+	- Nome
+	- Classe
+	- 3 Habilidades iniciais (escolha uma)
+- Mundo fictício
+	- Variedade de cenários
+	- NPCs (Ajudam com a gameplay ou lore)
+- Missões (fornecidas por NPCs)
+- Habilidades (levelUp)
+	- Sistema de habilidade
+	- XP obitido em missões e em combate
+
+### Sistema de Habilidades
+Ao subir de nível o personagem ganha 3 opções de selecionar uma habilidade de sua classe para adquirir
+
+### Inventário (Cachorro mochileiro)
+- Independente do número de players o inventário possui um limite fixo (pode ser expandido)
+- Cada personagem carrega um numero pequeno de itens e que poderam ser acessados durante o combate
+
+### Multiplayer
+	Interação somente no momento do combate
