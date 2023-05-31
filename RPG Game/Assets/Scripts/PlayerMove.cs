@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
-    float x, y;
+    Vector2 move;
     Rigidbody2D rb;
     public float velMove;
     void Start()
@@ -15,11 +15,15 @@ public class Move : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        x = Input.GetAxisRaw("Horizontal") * velMove;
-        y = Input.GetAxisRaw("Vertical") * velMove;
+        move.x = Input.GetAxisRaw("Horizontal");
+        move.y = Input.GetAxisRaw("Vertical");
     }
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(x, y);
+        rb.velocity = move.normalized * Time.deltaTime * (velMove * 100);
+    }
+    public float getVelMove()
+    {
+        return velMove;
     }
 }
