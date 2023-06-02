@@ -51,4 +51,8 @@ public class InimigoMove : MonoBehaviour
     {
         inBattle = battle;
     }
+    public void resetPosition()
+    {
+        transform.position = inicialPos;
+    }
 }

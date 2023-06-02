@@ -3,23 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Manager : MonoBehaviour
 {
     public bool multiplayer;
+    public GameObject hudPlayer2, hudBattle;
+    EventSystem eventSystem;
+    public GameObject firstButtonBattleStart;
 
     PixelPerfectCamera camConfig;
     public Vector2 camSize;
     CamMove cam;
+    public float distanceCamera, cameraHeight;
 
-    public float distanceCamera;
     PlayerMove playerMove;
     PlayerFollow playerFollow;
     InimigoMove inimigo;
+    Vector2 playerPosition;
 
     void Awake()
     {
+        hudBattle.SetActive(false);
+        eventSystem = FindObjectOfType<EventSystem>();
         camConfig = FindObjectOfType<PixelPerfectCamera>();
+        camConfig.assetsPPU = (int)camSize.x;
         camConfig.refResolutionX = Screen.width;
         camConfig.refResolutionY = Screen.height;
         foreach(CanvasScaler aux in FindObjectsOfType<CanvasScaler>())
@@ -29,22 +37,32 @@ public class Manager : MonoBehaviour
         cam = FindObjectOfType<CamMove>();
         playerMove = FindObjectOfType<PlayerMove>();
 
+        hudPlayer2.SetActive(multiplayer);
         if (multiplayer)
         {
-             GameObject player2 = (GameObject)Resources.Load("Player2");
-            player2 = Instantiate(player2, playerMove.transform.position, Quaternion.identity);
-            playerFollow = FindObjectOfType<PlayerFollow>();
+            GameObject player2 = Instantiate((GameObject)Resources.Load("Player2"), playerMove.transform.position, Quaternion.identity);
+            playerFollow = player2.GetComponent<PlayerFollow>();
         }
     }
     public void StartBattle()
     {
+        eventSystem.sendNavigationEvents = true;
+        eventSystem.SetSelectedGameObject(firstButtonBattleStart);
+        hudBattle.SetActive(true);
+
+        //Cam
         camConfig.assetsPPU = (int)camSize.y;
-        playerFollow.enabled = false;
+        cam.enabled = false;
+
+        //Player
+        playerPosition = playerMove.transform.position;
         playerMove.enabled = false;
         playerMove.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        cam.enabled = false;
+
+        //Posição em BattleMode
         if(multiplayer)
         {
+            playerFollow.enabled = false;
             playerMove.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, -1.5f);
             playerFollow.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, 1.5f);
         }
@@ -53,15 +71,28 @@ public class Manager : MonoBehaviour
             playerMove.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, 0);
         }
         inimigo.transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 0);
+        
+        //Ajuste Cam
+        cam.transform.position -= new Vector3(0, cameraHeight, 0);
     }
     public void EndBattle()
     {
+        hudBattle.SetActive(false);
+        eventSystem.sendNavigationEvents = false;
+        //Cam
         camConfig.assetsPPU = (int)camSize.x;
-        playerMove.enabled = true;
-        playerFollow.enabled = true;
         cam.enabled = true;
+        //Player
+        playerMove.transform.position = playerPosition;
+        playerMove.enabled = true;
+        if(multiplayer)
+            playerFollow.enabled = true;
+        //Inimigo
         if (inimigo != null)
+        {
+            inimigo.resetPosition();
             inimigo.setInBattle(false);
+        }
     }
     public void setInimigo(InimigoMove i)
     {
