@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Inimigo
   layers:
   - Default
   - TransparentFX
@@ -11,8 +12,8 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
-  - 
+  - Inimigo
+  - Colisores
   - 
   - 
   - 
@@ -43,6 +44,9 @@ TagManager:
     locked: 0
   - name: Tile
     uniqueID: 2922358649
+    locked: 0
+  - name: Inimigos
+    uniqueID: 934249107
     locked: 0
   - name: Player
     uniqueID: 2644184149

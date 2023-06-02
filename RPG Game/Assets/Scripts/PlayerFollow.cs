@@ -9,7 +9,6 @@ public class PlayerFollow : MonoBehaviour
     {
         player = FindObjectOfType<PlayerMove>();
     }
-
     private void Update()
     {
         if(Vector2.Distance(transform.position, player.transform.position) >= 1)
