@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class InimigoUnity : MonoBehaviour
 {
-    public int tier;
+    public int tier, quantidadeExtra;
     private PersonagemMonstro personagem;
-    void Start()
-    {
-        
-    }
+    private PersonagemUnity target;
     private void LateUpdate()
     {
         if(FindObjectOfType<PersonagemUnity>() && personagem == null)
         {
             personagem = new CriaturaDaNoite(FindObjectOfType<PersonagemUnity>().getPersonagem());
-            print(personagem.getNome());
         }
     }
     public PersonagemMonstro getPersonagem() { return personagem; }
+    public void Atacar(PersonagemUnity[] p)
+    {
+        target = p[Random.Range(0, p.Length - 1)];
+        target.getPersonagem().atributo.Hp -= personagem.atributo.Atk;
+    }
+    public PersonagemUnity getTarget() { return target; }
+    public int getQuantidadeExtra() { return quantidadeExtra; }
+    public void setTarget(PersonagemUnity target) { this.target = target; }
 }

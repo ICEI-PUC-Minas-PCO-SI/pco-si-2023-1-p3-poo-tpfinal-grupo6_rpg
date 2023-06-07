@@ -8,27 +8,32 @@ using Unity.VisualScripting;
 
 public class Manager : MonoBehaviour
 {
-    public bool multiplayer;
+    //Outros
+    bool multiplayer;
     public GameObject hudPlayer2, hudBattle;
     EventSystem eventSystem;
     public GameObject firstButtonBattleStart;
 
+    //Cam
     PixelPerfectCamera camConfig;
     public Vector2 camSize;
     CamMove cam;
     public float distanceCamera, cameraHeight;
 
+    //Local Combate
     PlayerMove playerMove;
     PlayerFollow playerFollow;
     InimigoMove inimigo;
     Vector2 playerPosition;
 
+    //Modo Combate
     public Transform localSpawn;
-
-    List<Personagem> personagems = new List<Personagem>();
+    BattleManager battleManager;
+    public List<InimigoUnity> inimigosCombate;
 
     void Awake()
     {
+        battleManager = GetComponent<BattleManager>();
         hudBattle.SetActive(false);
         eventSystem = FindObjectOfType<EventSystem>();
         camConfig = FindObjectOfType<PixelPerfectCamera>();
@@ -57,20 +62,26 @@ public class Manager : MonoBehaviour
         playerMove.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
 
         //Posição em BattleMode
+        //Jogadores
         if(multiplayer)
         {
             playerFollow.enabled = false;
-            playerMove.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, -1.5f);
-            playerFollow.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, 1.5f);
+            playerMove.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, -1.3f);
+            playerFollow.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, 1.3f);
         }
         else
         {
             playerMove.transform.position = (Vector2)cam.transform.position - new Vector2(distanceCamera, 0);
         }
-        inimigo.transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 0);
-        
+
+        CriarInimigosCombate();
+
         //Ajuste Cam
         cam.transform.position -= new Vector3(0, cameraHeight, 0);
+
+        //Modo Combate
+        battleManager.Battle(inimigosCombate);
+
     }
     public void EndBattle()
     {
@@ -100,6 +111,60 @@ public class Manager : MonoBehaviour
         playerMove.GetComponent<PersonagemUnity>().setPlayer(principal);
 
     }
+    public void CriarInimigosCombate()
+    {
+        GameObject copia = (GameObject)Instantiate(inimigo.gameObject, inimigo.transform.position, Quaternion.identity);
+        Destroy(copia.GetComponent<InimigoMove>());
+        inimigo.gameObject.SetActive(false);
+        
+        inimigosCombate = new List<InimigoUnity>();
+        inimigosCombate.Add(copia.GetComponent<InimigoUnity>());
+
+        int quantI = inimigo.GetComponent<InimigoUnity>().getQuantidadeExtra();
+        if (quantI == 0)
+        {
+            inimigosCombate[0].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 0);
+        }
+        else if (quantI == 1)
+        {
+            //Cria
+            GameObject aux = (GameObject)Instantiate(copia, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+
+            //Posiciona
+            inimigosCombate[0].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, -1.3f);
+            inimigosCombate[1].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 1.3f);
+        }
+        else if (quantI == 2)
+        {
+            //Cria
+            GameObject aux = (GameObject)Instantiate(copia, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+            aux = (GameObject)Instantiate(copia, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+
+            //Posiciona
+            inimigosCombate[0].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, -1.3f);
+            inimigosCombate[1].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera + 1.8f, 0);
+            inimigosCombate[2].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 1.3f);
+        }
+        else if(quantI == 3)
+        {
+            //Cria
+            GameObject aux = (GameObject)Instantiate(copia, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+            aux = (GameObject)Instantiate(copia, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+            aux = (GameObject)Instantiate(copia, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+
+            //Posiciona
+            inimigosCombate[0].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, -1.3f);
+            inimigosCombate[1].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera + 1.8f, -1.5f);
+            inimigosCombate[2].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera + 1.8f, 1.5f);
+            inimigosCombate[3].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 1.3f);
+        }
+    }
     public void ComecarJogo(Vector2 localSpawn)
     {
         cam = FindObjectOfType<CamMove>();
@@ -111,8 +176,7 @@ public class Manager : MonoBehaviour
             playerFollow = player2.GetComponent<PlayerFollow>();
         }
     }
-    public void setInimigo(InimigoMove i)
-    {
-        inimigo = i;
-    }
+    public void setInimigo(InimigoMove inimigo) { this.inimigo = inimigo; }
+    public EventSystem getEventSystem() { return eventSystem; }
+    public bool getMultiplayer() { return multiplayer; }
 }
