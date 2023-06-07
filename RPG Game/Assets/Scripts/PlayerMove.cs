@@ -6,9 +6,10 @@ public class PlayerMove : MonoBehaviour
 {
     Vector2 move;
     Rigidbody2D rb;
-    public float velMove;
+    float velMove;
     void Start()
     {
+        velMove = 3;
         rb = GetComponent<Rigidbody2D>();
     }
 

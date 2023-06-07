@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class Manager : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class Manager : MonoBehaviour
     InimigoMove inimigo;
     Vector2 playerPosition;
 
+    public Transform localSpawn;
+
+    List<Personagem> personagems = new List<Personagem>();
+
     void Awake()
     {
         hudBattle.SetActive(false);
@@ -34,15 +39,7 @@ public class Manager : MonoBehaviour
         {
             aux.referenceResolution = new Vector2(Screen.width, Screen.height);
         }
-        cam = FindObjectOfType<CamMove>();
-        playerMove = FindObjectOfType<PlayerMove>();
-
-        hudPlayer2.SetActive(multiplayer);
-        if (multiplayer)
-        {
-            GameObject player2 = Instantiate((GameObject)Resources.Load("Player2"), playerMove.transform.position, Quaternion.identity);
-            playerFollow = player2.GetComponent<PlayerFollow>();
-        }
+        ComecarJogo(localSpawn.position);
     }
     public void StartBattle()
     {
@@ -92,6 +89,26 @@ public class Manager : MonoBehaviour
         {
             inimigo.resetPosition();
             inimigo.setInBattle(false);
+        }
+    }
+    public void CriarPersonagem(Vector2 localSpawn, bool principal)
+    {
+        GameObject player = (GameObject)Instantiate((GameObject)Resources.Load("Ninja"), localSpawn, Quaternion.identity);
+        player.AddComponent<PlayerMove>();
+        playerMove = player.GetComponent<PlayerMove>();
+        player.transform.position = localSpawn;
+        playerMove.GetComponent<PersonagemUnity>().setPlayer(principal);
+
+    }
+    public void ComecarJogo(Vector2 localSpawn)
+    {
+        cam = FindObjectOfType<CamMove>();
+        CriarPersonagem(localSpawn, true);
+        hudPlayer2.SetActive(multiplayer);
+        if (multiplayer)
+        {
+            GameObject player2 = Instantiate((GameObject)Resources.Load("Player2"), playerMove.transform.position, Quaternion.identity);
+            playerFollow = player2.GetComponent<PlayerFollow>();
         }
     }
     public void setInimigo(InimigoMove i)

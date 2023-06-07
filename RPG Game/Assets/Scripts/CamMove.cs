@@ -7,8 +7,9 @@ public class CamMove : MonoBehaviour
     public Transform target;
     public float velMove, distanciaMax;
 
-    private void Awake()
+    private void Start()
     {
+        target = FindObjectOfType<PlayerMove>().transform;
         if (target != null)
             transform.position = target.position;
     }
