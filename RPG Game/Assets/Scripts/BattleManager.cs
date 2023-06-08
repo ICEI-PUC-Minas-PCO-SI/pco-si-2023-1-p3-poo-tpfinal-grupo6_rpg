@@ -15,6 +15,7 @@ public class BattleManager : MonoBehaviour
 
     //UI
     public Slider tempoAcao;
+    bool submitPress;
 
     //Inimigo
     GameObject targetSelecionado;
@@ -30,7 +31,52 @@ public class BattleManager : MonoBehaviour
         manager = GetComponent<Manager>();
         targetSelecionado = (GameObject)Instantiate(Resources.Load("TargetSelecionado"), transform.position, Quaternion.identity);
     }
+    private void Update()
+    {
+        if (!submitPress)
+        {
+            if (turnoPlayer && selecaoInimigo && !jogadorMove)
+            {
+                if (Input.GetButtonUp("Horizontal"))
+                    podeSelecionar = true;
+                if (podeSelecionar)
+                {
+                    if (Input.GetAxisRaw("Horizontal") > 0)
+                    {
+                        targetSelecionadoIndex++;
+                        podeSelecionar = false;
+                    }
+                    else if (Input.GetAxisRaw("Horizontal") < 0)
+                    {
+                        targetSelecionadoIndex--;
+                        podeSelecionar = false;
+                    }
 
+                    if (targetSelecionadoIndex >= inimigos.Count)
+                        targetSelecionadoIndex = 0;
+                    else if (targetSelecionadoIndex < 0)
+                        targetSelecionadoIndex = inimigos.Count - 1;
+                }
+
+                if (Input.GetButtonDown("Cancel") && selecaoInimigo)
+                {
+                    selecaoInimigo = false;
+                    manager.getEventSystem().SetSelectedGameObject(manager.firstButtonBattleStart);
+                }
+                if (Input.GetButtonDown("Submit") && !jogadorMove)
+                {
+                    selecaoInimigo = false;
+                    podeSelecionar = true;
+                    jogadorMove = true;
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetButtonUp("Submit"))
+                submitPress = false;
+        }
+    }
     void FixedUpdate()
     {
         targetSelecionado.SetActive(selecaoInimigo && turnoPlayer && !jogadorMove);
@@ -77,18 +123,6 @@ public class BattleManager : MonoBehaviour
                         targetSelecionadoIndex = inimigos.Count - 1;
                 }
                 targetSelecionado.transform.position = inimigos[targetSelecionadoIndex].transform.position + new Vector3(0, 1);
-
-                if (Input.GetButtonDown("Cancel"))
-                {
-                    selecaoInimigo = false;
-                    manager.getEventSystem().SetSelectedGameObject(manager.firstButtonBattleStart);
-                }
-                if (Input.GetButtonDown("Submit"))
-                {
-                    selecaoInimigo = false;
-                    podeSelecionar = true;
-                    jogadorMove = true;
-                }
             }
             if (jogadorMove)
             {
@@ -96,10 +130,19 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    public void Battle(List<InimigoUnity> inimigos)
+    public void Battle(List<InimigoUnity> inimigos, PersonagemUnity p1, PersonagemUnity p2)
     {
-        if (p == null)
-            p = FindObjectsOfType<PersonagemUnity>();
+        if(p2 != null)
+        {
+            p = new PersonagemUnity[2];
+            p[0] = p1;
+            p[1] = p2;
+        }
+        else
+        {
+            p = new PersonagemUnity[1];
+            p[0] = p1;
+        }
         this.inimigos = inimigos;
         inBattle = true;
         turno = -1;
@@ -127,13 +170,10 @@ public class BattleManager : MonoBehaviour
     }
     public void TurnoPlayer()
     {
-        if (!turnoPlayer)
-        {
-            turnoPlayer = true;
-            turnoInimigo = false;
-            jogadorVez++;
-            posicaoInicial = p[jogadorVez - 1].transform.position;
-        }
+        turnoPlayer = true;
+        turnoInimigo = false;
+        jogadorVez++;
+        posicaoInicial = p[jogadorVez - 1].transform.position;
     }
     public void TurnoInimigo()
     {
@@ -210,6 +250,7 @@ public class BattleManager : MonoBehaviour
         targetSelecionadoIndex = 0;
         podeSelecionar = true;
         selecaoInimigo = true;
+        submitPress = Input.GetButton("Submit");
     }
     IEnumerator DanoView(SpriteRenderer spriteView)
     {

@@ -17,7 +17,7 @@ public class InimigoUnity : MonoBehaviour
     public PersonagemMonstro getPersonagem() { return personagem; }
     public void Atacar(PersonagemUnity[] p)
     {
-        target = p[Random.Range(0, p.Length - 1)];
+        target = p[Random.Range(0, p.Length)];
         target.getPersonagem().atributo.Hp -= personagem.atributo.Atk;
     }
     public PersonagemUnity getTarget() { return target; }
