@@ -41,8 +41,18 @@ public abstract class PersonagemJogador : Personagem, IStatus
         }
         else
         {
+            //Upgrade de habilidade;
+            //Substituir hablidade (pega o msm nivel da habilidade anterior)
             Operacoes.SubstituirHabilidade(habilidades, hab);
         }
+    }
+    public int DarDano(int hab)
+    {
+        if (hab < 0)
+            return atributo.Atk;
+
+        atributo.Mana -= habilidades[hab].Custo;
+        return (int)(atributo.Atk * habilidades[hab].Multiplicador);
     }
     public abstract void LevelUp();
 

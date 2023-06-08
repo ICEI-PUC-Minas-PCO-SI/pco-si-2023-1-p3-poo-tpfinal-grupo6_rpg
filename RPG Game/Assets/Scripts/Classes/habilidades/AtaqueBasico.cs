@@ -9,6 +9,8 @@ namespace RpgGame.habilidades
             Nome = "Ataque basico";
             Multiplicador = 1;
             Tier = 0;
+            Custo = 0;
+            Dano = 6;
         }
     }
 }

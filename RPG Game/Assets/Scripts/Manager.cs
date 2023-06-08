@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using Unity.VisualScripting;
 using TMPro;
 
 public class Manager : MonoBehaviour
 {
     //Outros
     public bool multiplayer;
-    public string p1, p2;
+    public int p1Classe, p2Classe;
     bool inBattle;
 
     public GameObject hudPlayer2, hudBattle;
@@ -36,13 +35,17 @@ public class Manager : MonoBehaviour
     public List<InimigoUnity> inimigosCombate;
 
     //UI
-    public Slider vidaSliderP1, levelSliderP1;
-    public TextMeshProUGUI vidaTxtP1, levelTxtP1;
+    public Slider vidaSliderP1, levelSliderP1, manaSliderP1;
+    public TextMeshProUGUI vidaTxtP1, levelTxtP1, manaTxtP1;
     public Image faceP1;
 
-    public Slider vidaSliderP2, levelSliderP2;
-    public TextMeshProUGUI vidaTxtP2, levelTxtP2;
+    public Slider vidaSliderP2, levelSliderP2, manaSliderP2;
+    public TextMeshProUGUI vidaTxtP2, levelTxtP2, manaTxtP2;
     public Image faceP2;
+    public Sprite[] faces;
+    
+    //Players
+    PersonagemUnity p1, p2;
 
     void Awake()
     {
@@ -58,13 +61,40 @@ public class Manager : MonoBehaviour
             aux.referenceResolution = new Vector2(Screen.width, Screen.height);
         }
         ComecarJogo(localSpawn.position);
+        faceP1.sprite = faces[p1Classe];
+        if (p2 != null)
+            faceP2.sprite = faces[p2Classe];
+    }
+    private void Update()
+    {
+        vidaSliderP1.value = p1.getPersonagem().atributo.Hp;
+        vidaSliderP1.maxValue = p1.getPersonagem().atributo.MaxHp;
+        vidaTxtP1.text = (vidaSliderP1.value + "/" + vidaSliderP1.maxValue);
+        manaSliderP1.value = p1.getPersonagem().atributo.Mana;
+        manaSliderP1.maxValue = p1.getPersonagem().atributo.MaxMana;
+        manaTxtP1.text = (manaSliderP1.value + "/" + manaSliderP1.maxValue);
+        levelSliderP1.value = p1.getPersonagem().atributo.Xp;
+        levelSliderP1.maxValue = p1.getPersonagem().atributo.MaxXp;
+        levelTxtP1.text = p1.getPersonagem().atributo.Nivel.ToString();
+        if (p2 != null)
+        {
+            vidaSliderP2.value = p2.getPersonagem().atributo.Hp;
+            vidaSliderP2.maxValue = p2.getPersonagem().atributo.MaxHp;
+            vidaTxtP2.text = (vidaSliderP2.value + "/" + vidaSliderP2.maxValue);
+            manaSliderP2.value = p2.getPersonagem().atributo.Mana;
+            manaSliderP2.maxValue = p2.getPersonagem().atributo.MaxMana;
+            manaTxtP2.text = (manaSliderP2.value + "/" + manaSliderP2.maxValue);
+            levelSliderP2.value = p2.getPersonagem().atributo.Xp;
+            levelSliderP2.maxValue = p2.getPersonagem().atributo.MaxXp;
+            levelTxtP2.text = p2.getPersonagem().atributo.Nivel.ToString();
+        }
     }
     public void StartBattle()
     {
         if (!inBattle)
         {
             eventSystem.sendNavigationEvents = true;
-            eventSystem.SetSelectedGameObject(firstButtonBattleStart);
+            SelecionarBotaoAtaque();
             hudBattle.SetActive(true);
 
             //Cam
@@ -96,11 +126,21 @@ public class Manager : MonoBehaviour
 
             //Modo Combate
             PersonagemUnity p1 = playerMove.GetComponent<PersonagemUnity>();
-            PersonagemUnity p2 = playerFollow != null ? playerFollow.GetComponent<PersonagemUnity>() : null;
+            p1.setInBattle(true);
+            PersonagemUnity p2 = null;
+            if (playerFollow != null)
+            {
+                p2 = playerFollow.GetComponent<PersonagemUnity>();
+                p2.setInBattle(true);
+            }
+
+            foreach (InimigoUnity i in inimigosCombate)
+                i.vida.gameObject.SetActive(true);
+
             battleManager.Battle(inimigosCombate, p1, p2);
         }
     }
-    public void EndBattle()
+    public void EndBattle(bool inimigoMorto)
     {
         hudBattle.SetActive(false);
         eventSystem.sendNavigationEvents = false;
@@ -113,44 +153,40 @@ public class Manager : MonoBehaviour
         if(multiplayer)
             playerFollow.enabled = true;
         //Inimigo
-        if (inimigo != null)
+        if (!inimigoMorto)
         {
             inimigo.resetPosition();
             inimigo.setInBattle(false);
+            inimigo.gameObject.SetActive(true);
         }
+        else
+        {
+            Destroy(inimigo);
+        }
+        inBattle = false;
     }
-    public void CriarPersonagem(Vector2 localSpawn, bool principal, string personagem)
+    private void CriarPersonagem(Vector2 localSpawn, bool principal, int classe)
     {
-        GameObject player = (GameObject)Instantiate((GameObject)Resources.Load(personagem), localSpawn, Quaternion.identity);   
+        GameObject player = (GameObject)Instantiate((GameObject)Resources.Load("PersonagemUnity"), localSpawn, Quaternion.identity);   
         player.transform.position = localSpawn;
         if (principal)
         {
             player.AddComponent<PlayerMove>();
+            player.GetComponent<SpriteRenderer>().sortingOrder = 1;
             playerMove = player.GetComponent<PlayerMove>();
-            PersonagemUnity aux = player.GetComponent<PersonagemUnity>();
-            aux.vidaSlider = vidaSliderP1;
-            aux.vidaTxt = vidaTxtP1;
-            aux.levelSlider = levelSliderP1;
-            aux.levelTxt = levelTxtP1;
-            aux.face = faceP1;
+            p1 = player.GetComponent<PersonagemUnity>();
+            p1.classe = classe;
         }
         else
         {
-            Destroy(player.GetComponent<Rigidbody2D>());
             Destroy(player.GetComponent<BoxCollider2D>());
             player.AddComponent<PlayerFollow>();
             playerFollow = player.GetComponent<PlayerFollow>();
-            PersonagemUnity aux = player.GetComponent<PersonagemUnity>();
-            aux.vidaSlider = vidaSliderP2;
-            aux.vidaTxt = vidaTxtP2;
-            aux.levelSlider = levelSliderP2;
-            aux.levelTxt = levelTxtP2;
-            aux.face = faceP2;
-        }
-        
-
+            p2 = player.GetComponent<PersonagemUnity>();
+            p2.classe = classe;
+        }     
     }
-    public void CriarInimigosCombate()
+    private void CriarInimigosCombate()
     {
         inBattle = true;
         GameObject copia = (GameObject)Instantiate(inimigo.gameObject, inimigo.transform.position, Quaternion.identity);
@@ -207,13 +243,13 @@ public class Manager : MonoBehaviour
             inimigosCombate[3].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 1.3f);
         }
     }
-    public void ComecarJogo(Vector2 localSpawn)
+    private void ComecarJogo(Vector2 localSpawn)
     {
         cam = FindObjectOfType<CamMove>();
-        CriarPersonagem(localSpawn, true, p1);
+        CriarPersonagem(localSpawn, true, p1Classe);
         if (multiplayer)
         {
-            CriarPersonagem(localSpawn, false, p2);
+            CriarPersonagem(localSpawn, false, p2Classe);
             hudPlayer2.SetActive(true);
         }
         else
@@ -225,4 +261,8 @@ public class Manager : MonoBehaviour
     public void setInimigo(InimigoMove inimigo) { this.inimigo = inimigo; }
     public EventSystem getEventSystem() { return eventSystem; }
     public bool getMultiplayer() { return multiplayer; }
+    public void SelecionarBotaoAtaque()
+    {
+        eventSystem.SetSelectedGameObject(firstButtonBattleStart);
+    }
 }

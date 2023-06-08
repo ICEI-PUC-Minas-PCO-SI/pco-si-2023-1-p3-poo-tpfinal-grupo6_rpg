@@ -12,7 +12,7 @@ internal class CriaturaDaNoite : PersonagemMonstro
         int nivel = Operacoes.GerarNivel(tier, status);
         int maxHp = Operacoes.RealizarFunc(tier, nivel, Operacoes.GerarHp);
         int atk = Operacoes.RealizarFunc(tier, nivel, Operacoes.GerarAtk);
-        int xp = 0; //IMPLEMENTAR
+        int xp = Operacoes.RealizarFunc(tier, nivel, Operacoes.GerarXp);
         habilidades = new List<Habilidade>(Operacoes.GerarHab(tier, nivel));
         atributo = new Atributos { Nivel = nivel, MaxHp = maxHp, Hp = maxHp, Atk = atk, Xp = xp };
     }

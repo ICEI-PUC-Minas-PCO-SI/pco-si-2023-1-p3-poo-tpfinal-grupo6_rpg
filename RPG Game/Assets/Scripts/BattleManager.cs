@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
     public float velTempoAcao, velMoveAtk, tempoInimigoAtk;
-    int turno, jogadorVez, inimigoIndex;
+    int turno, jogadorVez, inimigoIndex, habilidadeSelecionada, chanceFugir;
     PersonagemUnity[] p;
     List<InimigoUnity> inimigos;
     bool inBattle, turnoPlayer, turnoInimigo, selecaoInimigo;
@@ -15,11 +16,13 @@ public class BattleManager : MonoBehaviour
 
     //UI
     public Slider tempoAcao;
+    public Button[] buttonsHabilidades;
+    public TextMeshProUGUI atacarTxtDano, fugirTxt, console;
     bool submitPress;
 
     //Inimigo
     GameObject targetSelecionado;
-    int targetSelecionadoIndex;
+    int targetSelecionadoIndex, xpTotal;
     bool podeSelecionar;
 
     //Jogador
@@ -83,6 +86,12 @@ public class BattleManager : MonoBehaviour
 
         if (inBattle)
         {
+            if (inimigos.Count == 0)
+            {
+                EndBattle();
+                return;
+            }
+
             manager.getEventSystem().sendNavigationEvents = turnoPlayer && !selecaoInimigo && !jogadorMove;
             if (turnoPlayer && !jogadorMove)
             {
@@ -144,38 +153,45 @@ public class BattleManager : MonoBehaviour
             p[0] = p1;
         }
         this.inimigos = inimigos;
+        chanceFugir = 7;
+        xpTotal = 0;
         inBattle = true;
         turno = -1;
         jogadorVez = 0;
         ProximoTurno();
     }
-    public void ProximoTurno()
+    private void ProximoTurno()
     {
-        turno++;
-        tempoAcao.value = 0;
-        if (manager.getMultiplayer())
+        if (inBattle)
         {
-            if (jogadorVez == 2)
-                TurnoInimigo();
+            turno++;
+            tempoAcao.value = 0;
+            if (manager.getMultiplayer())
+            {
+                if (jogadorVez == 2)
+                    TurnoInimigo();
+                else
+                    TurnoPlayer();
+            }
             else
-                TurnoPlayer();
-        }
-        else
-        {
-            if (jogadorVez == 1)
-                TurnoInimigo();
-            else
-                TurnoPlayer();
+            {
+                if (jogadorVez == 1)
+                    TurnoInimigo();
+                else
+                    TurnoPlayer();
+            }
         }
     }
-    public void TurnoPlayer()
+    private void TurnoPlayer()
     {
         turnoPlayer = true;
         turnoInimigo = false;
-        jogadorVez++;
+        jogadorVez++; 
+        HabilidadeController();
         posicaoInicial = p[jogadorVez - 1].transform.position;
+        manager.SelecionarBotaoAtaque();
     }
-    public void TurnoInimigo()
+    private void TurnoInimigo()
     {
         if (!turnoInimigo)
         {
@@ -184,10 +200,9 @@ public class BattleManager : MonoBehaviour
             turnoPlayer = false;
             posicaoInicial = inimigos[inimigoIndex].transform.position;
             inimigos[inimigoIndex].Atacar(p);
-            
         }
     }
-    public void InimigoVez()
+    private void InimigoVez()
     {
         if (inimigos[inimigoIndex].getTarget() != null)
         {
@@ -221,7 +236,7 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    public void PlayerVez()
+    private void PlayerVez()
     {   
         if (targetSelecionadoIndex != -1)
         {
@@ -229,7 +244,7 @@ public class BattleManager : MonoBehaviour
                 inimigos[targetSelecionadoIndex].transform.position, velMoveAtk * Time.deltaTime);
             if (Vector2.Distance(p[jogadorVez - 1].transform.position, inimigos[targetSelecionadoIndex].transform.position) <= 1.6f)
             {
-                inimigos[targetSelecionadoIndex].getPersonagem().atributo.Hp -= p[jogadorVez - 1].getPersonagem().atributo.Atk;
+                inimigos[targetSelecionadoIndex].getPersonagem().atributo.Hp -= p[jogadorVez - 1].getPersonagem().DarDano(habilidadeSelecionada);
                 StartCoroutine(DanoView(inimigos[targetSelecionadoIndex].GetComponent<SpriteRenderer>()));
                 targetSelecionadoIndex = -1;
             }
@@ -245,8 +260,15 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    public void SelecaoInimigo(int idAtk)
+    public void SelecaoInimigo(int hab)
     {
+        if(hab >= 0 && p[jogadorVez-1].getPersonagem().atributo.Mana < 
+            p[jogadorVez - 1].getPersonagem().habilidades[hab].Custo)
+        {
+            console.text = "Pouca mana para utilizar "+ p[jogadorVez - 1].getPersonagem().habilidades[hab].Nome;
+            return;
+        }
+        habilidadeSelecionada = hab;
         targetSelecionadoIndex = 0;
         podeSelecionar = true;
         selecaoInimigo = true;
@@ -254,8 +276,67 @@ public class BattleManager : MonoBehaviour
     }
     IEnumerator DanoView(SpriteRenderer spriteView)
     {
-        spriteView.color = Color.red;
+        if (spriteView != null)
+            spriteView.color = Color.red;
         yield return new WaitForSeconds(tempoInimigoAtk);
-        spriteView.color = Color.white;
+        if (spriteView != null)
+            spriteView.color = Color.white;
+    }
+    private void EndBattle()
+    {
+        inBattle = false;
+        bool inimigosMortos = inimigos.Count <= 0;
+        if (inimigosMortos)
+        {
+            foreach (PersonagemUnity p in p)
+            {
+                p.getPersonagem().atributo.Xp += xpTotal;
+                p.setInBattle(false);
+            }
+        }
+        else
+        {
+            foreach (InimigoUnity i in inimigos)
+                Destroy(i.gameObject);
+
+            foreach (PersonagemUnity p in p)
+                p.setInBattle(false);
+        }
+        manager.EndBattle(inimigosMortos);
+    }
+    public void inimigoMorto(InimigoUnity i) {
+        xpTotal += i.getPersonagem().atributo.Xp; 
+        inimigos.Remove(i);
+    }
+    public void Fugir()
+    {
+        if (Random.Range(0, 11) >= chanceFugir)
+        {
+            EndBattle();
+        }
+        else
+        {
+            console.text = "A fuga falhou";
+            jogadorVez = 2;
+            ProximoTurno();
+        }
+    }
+    private void HabilidadeController()
+    {
+        PersonagemJogador personagem = p[jogadorVez - 1].getPersonagem();
+        atacarTxtDano.text = personagem.atributo.Atk.ToString();
+        fugirTxt.text = (chanceFugir * 10).ToString();
+
+        foreach (Button b in buttonsHabilidades)
+            b.gameObject.SetActive(false);
+
+        for(int i = 0; i < personagem.habilidades.Count; i++)
+        {
+            buttonsHabilidades[i].gameObject.SetActive(true);
+            TextMeshProUGUI[] texts = buttonsHabilidades[i].GetComponentsInChildren<TextMeshProUGUI>();
+            texts[0].text = personagem.habilidades[i].Nome;
+            texts[1].text = personagem.habilidades[i].Custo.ToString();
+            texts[2].text = personagem.habilidades[i].Dano.ToString();
+        }
     }
 }

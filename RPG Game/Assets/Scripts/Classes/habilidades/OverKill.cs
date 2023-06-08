@@ -14,6 +14,8 @@ namespace RpgGame.habilidades
             Nome = "Overkill";
             Multiplicador = 99.0;
             Tier = 4;
+            Custo = 100;
+            Dano = 50;
         }
     }
 }

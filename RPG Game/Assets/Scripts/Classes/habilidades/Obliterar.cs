@@ -14,6 +14,8 @@ namespace RpgGame.habilidades
             Nome = "Obliterar";
             Multiplicador = 2.6;
             Tier = 4;
+            Custo = 25;
+            Dano = 30;
         }
     }
 }

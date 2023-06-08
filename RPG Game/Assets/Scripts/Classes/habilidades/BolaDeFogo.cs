@@ -9,6 +9,8 @@ namespace RpgGame.habilidades
             Nome = "Bola de fogo";
             Multiplicador = 1.4;
             Tier = 2;
+            Custo = 12;
+            Dano = 20;
         }
     }
 }

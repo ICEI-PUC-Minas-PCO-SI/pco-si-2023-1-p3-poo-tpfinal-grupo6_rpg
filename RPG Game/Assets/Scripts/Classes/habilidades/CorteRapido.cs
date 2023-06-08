@@ -8,6 +8,8 @@ namespace RpgGame.habilidades
             Nome = "Corte Rapido";
             Multiplicador = 1.2;
             Tier = 1;
+            Custo = 5;
+            Dano = 12;
         }
     }
 }

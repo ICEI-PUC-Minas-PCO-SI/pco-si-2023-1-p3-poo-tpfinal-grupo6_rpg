@@ -8,6 +8,8 @@ namespace RpgGame.habilidades
             Nome = "Soco explosivo";
             Multiplicador = 1.8;
             Tier = 3;
+            Custo = 12;
+            Dano = 20;
         }
     }
 }
