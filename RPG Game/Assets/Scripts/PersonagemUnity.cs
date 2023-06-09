@@ -11,6 +11,8 @@ public class PersonagemUnity : MonoBehaviour
     private PersonagemJogador personagem;
     private Animator anim;
     private Rigidbody2D rb;
+    private List<ItemObjeto> inventario =  new List<ItemObjeto>();
+    private ItemObjeto arma;
 
     void Start()
     {
@@ -47,4 +49,6 @@ public class PersonagemUnity : MonoBehaviour
     public PersonagemJogador getPersonagem() { return personagem; }
     public bool getInBattle() { return inBattle; }
     public void setInBattle(bool inBattle) { this.inBattle = inBattle; anim.Play("Direita"); }
+    public List<ItemObjeto> Inventario { get => inventario; set => inventario = value; }
+    public ItemObjeto Arma { get => arma; set => arma = value; }
 }

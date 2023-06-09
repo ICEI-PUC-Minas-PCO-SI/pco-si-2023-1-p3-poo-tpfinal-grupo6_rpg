@@ -235,11 +235,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 8
-        y: 288
-        width: 24
-        height: 24
+        y: 232
+        width: 80
+        height: 80
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -247,90 +247,6 @@ TextureImporter:
       bones: []
       spriteID: 9efe94679e421e246aad07996232e8fa
       internalID: 1680792836
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_4x_7
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 288
-        width: 24
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 082f5d300e899164b895ef84fa711d36
-      internalID: -1251864256
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_4x_8
-      rect:
-        serializedVersion: 2
-        x: 8
-        y: 232
-        width: 24
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 32f91583412304042947d40f0d3836c4
-      internalID: 1486588849
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_4x_9
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 232
-        width: 24
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2ab24804836ba0740bdbb0a47ad9f1db
-      internalID: -451531771
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: GUI_4x_10
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 256
-        width: 20
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7cf1543085012a84d93775bf17c61f10
-      internalID: -510031421
       vertices: []
       indices: 
       edges: []

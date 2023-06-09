@@ -265,4 +265,12 @@ public class Manager : MonoBehaviour
     {
         eventSystem.SetSelectedGameObject(firstButtonBattleStart);
     }
+    public PersonagemUnity[] getPersonagensUnity()
+    {
+        PersonagemUnity[] players = new PersonagemUnity[p2 != null ? 2 : 1];
+        players[0] = p1;
+        if (p2 != null)
+            players[1] = p2;
+        return players;
+    }
 }
