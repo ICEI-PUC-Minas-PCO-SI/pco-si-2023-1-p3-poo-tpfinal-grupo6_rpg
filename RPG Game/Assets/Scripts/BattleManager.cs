@@ -17,7 +17,7 @@ public class BattleManager : MonoBehaviour
     //UI
     public Slider tempoAcao;
     public Button[] buttonsHabilidades;
-    public TextMeshProUGUI atacarTxtDano, fugirTxt, console;
+    public TextMeshProUGUI atacarTxtDano, fugirTxt;
     bool submitPress;
 
     //Inimigo
@@ -267,7 +267,6 @@ public class BattleManager : MonoBehaviour
         if(hab >= 0 && p[jogadorVez-1].getPersonagem().atributo.Mana < 
             p[jogadorVez - 1].getPersonagem().habilidades[hab].Custo)
         {
-            console.text = "Pouca mana para utilizar "+ p[jogadorVez - 1].getPersonagem().habilidades[hab].Nome;
             return;
         }
         habilidadeSelecionada = hab;
@@ -316,7 +315,6 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            console.text = "A fuga falhou";
             jogadorVez = 2;
             ProximoTurno();
         }
@@ -335,8 +333,10 @@ public class BattleManager : MonoBehaviour
             buttonsHabilidades[i].gameObject.SetActive(true);
             TextMeshProUGUI[] texts = buttonsHabilidades[i].GetComponentsInChildren<TextMeshProUGUI>();
             texts[0].text = personagem.habilidades[i].Nome;
-            texts[1].text = personagem.habilidades[i].Custo.ToString();
-            texts[2].text = personagem.habilidades[i].Dano.ToString();
+            texts[1].text = personagem.habilidades[i].Dano.ToString();
+            texts[2].text = personagem.habilidades[i].Custo.ToString();
         }
     }
+    public bool InBattle { get => inBattle; set => inBattle = value; }
+
 }

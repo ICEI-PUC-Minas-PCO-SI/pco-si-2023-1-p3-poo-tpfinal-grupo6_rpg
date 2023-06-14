@@ -14,6 +14,7 @@ public class InventarioManager : MonoBehaviour
     public Sprite[] iconeItens;
     public List<ItemObjeto> listaItens = new List<ItemObjeto>();
     Manager manager;
+    BattleManager battleManager;
 
     //Itens
     public Image[] localItens;
@@ -31,6 +32,7 @@ public class InventarioManager : MonoBehaviour
     private void Awake()
     {
         viewItemP2.SetActive(false);
+        battleManager = GetComponent<BattleManager>();
         manager = GetComponent<Manager>();
         p = manager.getPersonagensUnity();
         playerSelecionarButton[1].interactable = manager.getMultiplayer();
@@ -42,7 +44,7 @@ public class InventarioManager : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetKeyDown("i"))
+        if (!battleManager.InBattle && Input.GetKeyDown("i"))
         {
             if (!hudInventario.activeSelf)
                 AbrirInventario();

@@ -12,6 +12,8 @@ public class Manager : MonoBehaviour
     bool multiplayer;
     int p1Classe, p2Classe;
     bool inBattle;
+    InventarioManager inventarioManager;
+
 
     public GameObject hudPlayer2, hudBattle;
     EventSystem eventSystem;
@@ -78,6 +80,7 @@ public class Manager : MonoBehaviour
         faceP1.sprite = faces[p1Classe];
         if (p2 != null)
             faceP2.sprite = faces[p2Classe];
+        inventarioManager = GetComponent<InventarioManager>();
     }
     private void Update()
     {
@@ -108,6 +111,7 @@ public class Manager : MonoBehaviour
         {
             eventSystem.sendNavigationEvents = true;
             SelecionarBotaoAtaque();
+            inventarioManager.FecharInventario();
             hudBattle.SetActive(true);
 
             //Cam
