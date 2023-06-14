@@ -27,11 +27,13 @@ public class BattleManager : MonoBehaviour
 
     //Jogador
     bool jogadorMove;
+    PlayerData playerData;
 
     void Start()
     {
         targetSelecionadoIndex = -1;
         manager = GetComponent<Manager>();
+        playerData = manager.PlayerData;
         targetSelecionado = (GameObject)Instantiate(Resources.Load("TargetSelecionado"), transform.position, Quaternion.identity);
     }
     private void Update()
@@ -288,11 +290,9 @@ public class BattleManager : MonoBehaviour
         bool inimigosMortos = inimigos.Count <= 0;
         if (inimigosMortos)
         {
+            playerData.SetXp(xpTotal);
             foreach (PersonagemUnity p in p)
-            {
-                p.getPersonagem().atributo.Xp += xpTotal;
                 p.setInBattle(false);
-            }
         }
         else
         {

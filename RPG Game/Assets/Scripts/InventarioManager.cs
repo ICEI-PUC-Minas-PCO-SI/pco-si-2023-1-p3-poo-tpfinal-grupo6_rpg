@@ -16,25 +16,29 @@ public class InventarioManager : MonoBehaviour
     Manager manager;
 
     //Itens
-    public Image[] localItens, itensP1, itensP2;
-    public Image itemView;
+    public Image[] localItens;
+    public Image itemView, armaP1, armaP2;
+    public Image faceP1, faceP2;
     public TextMeshProUGUI desc;
     public Button equipar, voltarInfoView;
 
     //Player
     public List<ItemObjeto> mochilaPlayer = new List<ItemObjeto>();
     PersonagemUnity[] p;
-    ItemObjeto itemSelecionado;
+    public ItemObjeto itemSelecionado;
+    public GameObject viewItemP2;
 
     private void Awake()
     {
+        viewItemP2.SetActive(false);
         manager = GetComponent<Manager>();
         p = manager.getPersonagensUnity();
-        playerSelecionarButton[1].interactable = manager.multiplayer;
+        playerSelecionarButton[1].interactable = manager.getMultiplayer();
         eventSystem = FindObjectOfType<EventSystem>();
         ConstruirItens();
-        mochilaPlayer.Add(listaItens[1]);
-        mochilaPlayer.Add(listaItens[3]);
+        mochilaPlayer.Add(listaItens[0]);
+        mochilaPlayer.Add(listaItens[4]);
+        mochilaPlayer.Add(listaItens[2]);
     }
     void Update()
     {
@@ -57,47 +61,33 @@ public class InventarioManager : MonoBehaviour
     }
     public void HUDPersonagem()
     {
-        if (itemSelecionado.Personagem == null)
+        if (itemSelecionado.Personagem)
         {
-            if (itemSelecionado.Arma)
-                if (p[0].Arma != null)
-                    playerSelecionarButton[0].interactable = false;
-                else
-                    playerSelecionarButton[0].interactable = true;
-            else
-                if (p[0].Inventario.Count > 3)
-                playerSelecionarButton[0].interactable = false;
-            else
-                playerSelecionarButton[0].interactable = true;
-            if (manager.getMultiplayer())
-            {
-                if (itemSelecionado.Arma)
-                    if (p[1].Arma != null)
-                        playerSelecionarButton[1].interactable = false;
-                    else
-                        playerSelecionarButton[1].interactable = true;
-                else
-                if (p[1].Inventario.Count > 3)
-                    playerSelecionarButton[1].interactable = false;
-                else
-                    playerSelecionarButton[1].interactable = true;
-            }
-            selecionarPlayerHUD.SetActive(true);         
-            eventSystem.SetSelectedGameObject(playerSelecionarButton[0].gameObject);
+            itemSelecionado.Personagem.Arma = null;
+            itemSelecionado.Personagem = null;
+            SelecionarInventario();
+            return;
         }
-        else
-        {
-            selecionarPlayerHUD.SetActive(true);
+        selecionarPlayerHUD.SetActive(true);         
             eventSystem.SetSelectedGameObject(playerSelecionarButton[0].gameObject);
-        }
     }
     public void Descartar()
     {
         mochilaPlayer.Remove(itemSelecionado);
+        if (itemSelecionado.Personagem != null)
+            itemSelecionado.Personagem.Arma = null;
         itemSelecionado = null;
+        CarregarItensHUD();
+        SelecionarInventario();
     }
     public void AbrirInventario()
     {
+        faceP1.sprite = manager.faceP1.sprite;
+        if (manager.getMultiplayer())
+        {
+            viewItemP2.SetActive(true);
+            faceP2.sprite = manager.faceP2.sprite;
+        }
         CarregarItensHUD();
         selecionarPlayerHUD.SetActive(false);
         infoViewHUD.SetActive(false);
@@ -132,6 +122,24 @@ public class InventarioManager : MonoBehaviour
                 localItens[i].gameObject.SetActive(false);
             }
         }
+        if (p[0].Arma != null)
+        {
+            armaP1.sprite = p[0].Arma.Img;
+            armaP1.gameObject.SetActive(true);
+        }
+        else
+            armaP1.gameObject.SetActive(false);
+
+        if (manager.getMultiplayer())
+        {
+            if (p[1].Arma != null)
+            {
+                armaP2.sprite = p[1].Arma.Img;
+                armaP2.gameObject.SetActive(true);
+            }
+            else
+                armaP2.gameObject.SetActive(false);
+        }
     }
     public void ConstruirItens()
     {
@@ -144,33 +152,33 @@ public class InventarioManager : MonoBehaviour
     }
     public void SelecionarInventario()
     {
+        CarregarItensHUD();
         selecionarPlayerHUD.SetActive(false);
         infoViewHUD.SetActive(false);
         eventSystem.SetSelectedGameObject(firstButton);
     }
     public void SelecionarPlayerItem(int playerSelecionado)
     {
-        //Equipar
+        //Equipar arma
         if (itemSelecionado.Personagem == null)
         {
             if (itemSelecionado.Arma)
+            {
                 p[playerSelecionado].Arma = itemSelecionado;
+                itemSelecionado.Personagem = p[playerSelecionado];
+            }
             else
-                p[playerSelecionado].Inventario.Add(itemSelecionado);
-            itemSelecionado.Personagem = p[playerSelecionado];
+            {
+                p[playerSelecionado].getPersonagem().atributo.Hp += itemSelecionado.Valor;
+                Descartar();
+            }
+            
         }
         //Desequipar
         else
         {
-            if (itemSelecionado.Arma)
-                p[playerSelecionado].Arma = null;
-            else
-                p[playerSelecionado].Inventario.Remove(itemSelecionado);
-            itemSelecionado.Personagem = null;
+            
         }
-        foreach (ItemObjeto i in p[0].Inventario)
-            print(i.Desc);
-
         CarregarItensHUD();
         SelecionarInventario();
     }

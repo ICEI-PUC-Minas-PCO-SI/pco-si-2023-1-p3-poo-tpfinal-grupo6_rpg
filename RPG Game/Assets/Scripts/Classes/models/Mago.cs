@@ -14,8 +14,6 @@ public sealed class Mago : PersonagemJogador
         atributo.Mana = 40;
         atributo.MaxMana = atributo.Mana;
         atributo.Atk = 6;
-        atributo.Xp = 0;
-        atributo.MaxXp = 50;
         atributo.Nivel = 1;
         inventario = new List<Item> { new CajadoMadeira(), new PocaoCura(), new PocaoCura() };
         habilidades = new List<Habilidade> { new BolaDeFogo(), new AtaqueMagico(), new Obliterar() };
@@ -29,6 +27,5 @@ public sealed class Mago : PersonagemJogador
         atributo.MaxMana += 5;
         atributo.Mana = atributo.MaxMana;
         atributo.Atk += 3;
-        atributo.MaxXp += 25;
     }
 }

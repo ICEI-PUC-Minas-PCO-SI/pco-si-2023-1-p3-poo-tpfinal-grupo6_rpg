@@ -9,8 +9,8 @@ using TMPro;
 public class Manager : MonoBehaviour
 {
     //Outros
-    public bool multiplayer;
-    public int p1Classe, p2Classe;
+    bool multiplayer;
+    int p1Classe, p2Classe;
     bool inBattle;
 
     public GameObject hudPlayer2, hudBattle;
@@ -34,21 +34,35 @@ public class Manager : MonoBehaviour
     BattleManager battleManager;
     public List<InimigoUnity> inimigosCombate;
 
-    //UI
-    public Slider vidaSliderP1, levelSliderP1, manaSliderP1;
-    public TextMeshProUGUI vidaTxtP1, levelTxtP1, manaTxtP1;
+    //UI   
+    public Animator animLevelUp;
+    public Slider levelSlider;
+    public TextMeshProUGUI levelTxt;
+
+    public Slider vidaSliderP1, manaSliderP1;
+    public TextMeshProUGUI vidaTxtP1, manaTxtP1;
     public Image faceP1;
 
-    public Slider vidaSliderP2, levelSliderP2, manaSliderP2;
-    public TextMeshProUGUI vidaTxtP2, levelTxtP2, manaTxtP2;
+    public Slider vidaSliderP2, manaSliderP2;
+    public TextMeshProUGUI vidaTxtP2, manaTxtP2;
     public Image faceP2;
     public Sprite[] faces;
     
     //Players
     PersonagemUnity p1, p2;
+    PlayerData playerData;
+
 
     void Awake()
     {
+        playerData = FindObjectOfType<PlayerData>();
+        MenuPrincipal menu = FindObjectOfType<MenuPrincipal>();
+        p1Classe = menu.playerSelecionado[0] - 1;
+        if (menu.playerSelecionado[1] != 0)
+        {
+            p2Classe = menu.playerSelecionado[1] - 1;
+            multiplayer = true;
+        }
         battleManager = GetComponent<BattleManager>();
         hudBattle.SetActive(false);
         eventSystem = FindObjectOfType<EventSystem>();
@@ -67,15 +81,17 @@ public class Manager : MonoBehaviour
     }
     private void Update()
     {
+        animLevelUp.SetBool("LevelUpDisponivel", playerData.LevelUpDisponivel > 0);
+        levelSlider.maxValue = playerData.XpMax;
+        levelSlider.value = playerData.Xp;
+        levelTxt.gameObject.SetActive(playerData.LevelUpDisponivel > 0);
+
         vidaSliderP1.value = p1.getPersonagem().atributo.Hp;
         vidaSliderP1.maxValue = p1.getPersonagem().atributo.MaxHp;
         vidaTxtP1.text = (vidaSliderP1.value + "/" + vidaSliderP1.maxValue);
         manaSliderP1.value = p1.getPersonagem().atributo.Mana;
         manaSliderP1.maxValue = p1.getPersonagem().atributo.MaxMana;
         manaTxtP1.text = (manaSliderP1.value + "/" + manaSliderP1.maxValue);
-        levelSliderP1.value = p1.getPersonagem().atributo.Xp;
-        levelSliderP1.maxValue = p1.getPersonagem().atributo.MaxXp;
-        levelTxtP1.text = p1.getPersonagem().atributo.Nivel.ToString();
         if (p2 != null)
         {
             vidaSliderP2.value = p2.getPersonagem().atributo.Hp;
@@ -84,9 +100,6 @@ public class Manager : MonoBehaviour
             manaSliderP2.value = p2.getPersonagem().atributo.Mana;
             manaSliderP2.maxValue = p2.getPersonagem().atributo.MaxMana;
             manaTxtP2.text = (manaSliderP2.value + "/" + manaSliderP2.maxValue);
-            levelSliderP2.value = p2.getPersonagem().atributo.Xp;
-            levelSliderP2.maxValue = p2.getPersonagem().atributo.MaxXp;
-            levelTxtP2.text = p2.getPersonagem().atributo.Nivel.ToString();
         }
     }
     public void StartBattle()
@@ -273,4 +286,5 @@ public class Manager : MonoBehaviour
             players[1] = p2;
         return players;
     }
+    public PlayerData PlayerData { get => playerData; set => playerData = value; }
 }
