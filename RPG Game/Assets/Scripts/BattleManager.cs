@@ -333,7 +333,7 @@ public class BattleManager : MonoBehaviour
             buttonsHabilidades[i].gameObject.SetActive(true);
             TextMeshProUGUI[] texts = buttonsHabilidades[i].GetComponentsInChildren<TextMeshProUGUI>();
             texts[0].text = personagem.habilidades[i].Nome;
-            texts[1].text = personagem.habilidades[i].Dano.ToString();
+            texts[1].text = ((int)(personagem.habilidades[i].Multiplicador * personagem.atributo.Atk * 1.6f)).ToString();
             texts[2].text = personagem.habilidades[i].Custo.ToString();
         }
     }

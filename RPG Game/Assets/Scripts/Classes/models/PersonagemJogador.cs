@@ -53,7 +53,7 @@ public abstract class PersonagemJogador : Personagem, IStatus
             return atributo.Atk;
 
         atributo.Mana -= habilidades[hab].Custo;
-        return (int)(atributo.Atk * habilidades[hab].Multiplicador);
+        return (int)(atributo.Atk * habilidades[hab].Multiplicador * 1.6f);
     }
     public abstract void LevelUp();
 

@@ -181,15 +181,7 @@ public static class Operacoes
     public static int GerarXp(int tier, int nivel)
     {
         Random r = new Random();
-        int xp;
-        switch (tier)
-        {
-            case 1: xp = r.Next(1, 5); break;
-            case 2: xp = r.Next(6, 12); break;
-            case 3: xp = r.Next(15, 40); break;
-            default: xp = 60; break;
-        }
-        return xp;
+        return r.Next(2, 10);
     }
     public static int RealizarFunc(int x, int y, Func<int, int, int> Func) //Uso de delegate
     {

@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 public class LevelUpManager : MonoBehaviour
 {
-    public GameObject firstButton, hudInGame, hudLevelUp;
+    public GameObject firstButton, hudInGame, hudLevelUp, hudInBattle, hudInventario;
     Manager manager;
     PlayerData playerData;
     List<Habilidade> allSkills;
@@ -33,7 +33,7 @@ public class LevelUpManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown("l") && playerData.LevelUpDisponivel > 0 && !inUpgrade)
+        if (Input.GetKeyDown("l") && playerData.LevelUpDisponivel > 0 && !inUpgrade && !hudInBattle.activeSelf && !hudInventario.activeSelf)
         {
             pVez = manager.P1.getPersonagem();
             CarregarHud(pVez);
@@ -82,8 +82,10 @@ public class LevelUpManager : MonoBehaviour
             }
             sortedSkills.Add(habClasse[Random.Range(0, habClasse.Count)]);
             sortedSkills.Add(habClasse[Random.Range(0, habClasse.Count)]);
-            descUpgrade[0].text = sortedSkills[0].Nome;
-            descUpgrade[1].text = sortedSkills[1].Nome;
+            descUpgrade[0].text = pVez.habilidades.Contains(sortedSkills[0]) ? 
+                "<color=#38F70C>Melhorar </color>" +sortedSkills[0].Nome : sortedSkills[0].Nome;
+            descUpgrade[1].text = pVez.habilidades.Contains(sortedSkills[1]) ?
+                "<color=#38F70C>Melhorar </color>" + sortedSkills[1].Nome : sortedSkills[1].Nome;
             atrType = Random.Range(0, 3);
             if (atrType == 0)
                 descUpgrade[2].text = "Aumente sua <color=#FF0D49>Vida</color>";
@@ -105,11 +107,11 @@ public class LevelUpManager : MonoBehaviour
             if (i == 2)
             {
                 if (atrType == 0)
-                    pVez.atributo.MaxHp += 3;
+                    pVez.atributo.MaxHp += 2;
                 if (atrType == 1)
-                    pVez.atributo.MaxMana += 3;
+                    pVez.atributo.MaxMana += 2;
                 else
-                    pVez.atributo.Atk += 3;
+                    pVez.atributo.Atk += 1;
             }
             else
             {
@@ -119,10 +121,28 @@ public class LevelUpManager : MonoBehaviour
                 //Substitui
                 else
                 {
-                    habilidadeSelecionada = sortedSkills[i];
-                    substituirHab = true;
-                    CarregarHud(pVez);
-                    return;
+                    if (pVez.habilidades.Contains(sortedSkills[i]))
+                    {
+                        foreach (Habilidade h in pVez.habilidades)
+                        {
+                            if (h.Equals(sortedSkills[i]))
+                            {
+                                if (h.Custo > 5)
+                                {
+                                    h.Custo -= 2;
+                                    h.Multiplicador += 1;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        habilidadeSelecionada = sortedSkills[i];
+                        substituirHab = true;
+                        CarregarHud(pVez);
+                        return;
+                    }
                 }
             }
         }

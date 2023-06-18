@@ -9,7 +9,8 @@ namespace RpgGame.habilidades
             Multiplicador = 1.8;
             Tier = 3;
             Custo = 8;
-            Dano = 10;
+            ClassType = 1;
+            Nivel = 1;
         }
     }
 }

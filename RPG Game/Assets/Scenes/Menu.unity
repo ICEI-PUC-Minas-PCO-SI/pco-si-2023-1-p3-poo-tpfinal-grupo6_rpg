@@ -1183,9 +1183,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<color=#FF0D49>Vida</color>: 10
+  m_text: '<color=#FF0D49>Vida</color>: 30
 
-    <color=#01F4FF>Mana</color>: 20
+    <color=#01F4FF>Mana</color>: 40
 
     <color=#FF9C00>Ataque</color>:
     6
@@ -2112,12 +2112,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<color=#FF0D49>Vida</color>: 10
+  m_text: '<color=#FF0D49>Vida</color>: 25
 
-    <color=#01F4FF>Mana</color>: 20
+    <color=#01F4FF>Mana</color>: 25
 
     <color=#FF9C00>Ataque</color>:
-    6
+    4
 
 '
   m_isRightToLeft: 0
@@ -4465,12 +4465,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<color=#FF0D49>Vida</color>: 10
+  m_text: '<color=#FF0D49>Vida</color>: 40
 
-    <color=#01F4FF>Mana</color>: 20
+    <color=#01F4FF>Mana</color>: 25
 
     <color=#FF9C00>Ataque</color>:
-    6
+    8
 
 '
   m_isRightToLeft: 0

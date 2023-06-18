@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class InimigoUnity : MonoBehaviour
 {
-    public int tier, quantidadeExtra;
+    int quantidadeExtra;
     private PersonagemMonstro personagem;
     private PersonagemUnity target;
     public SpriteRenderer vida;
+    private void Start()
+    {
+        quantidadeExtra = Random.Range(0, 4);
+    }
     private void Update()
     {
         if(personagem != null)
@@ -24,7 +28,7 @@ public class InimigoUnity : MonoBehaviour
     private void LateUpdate()
     {
         if(FindObjectOfType<PersonagemUnity>() && personagem == null)
-            personagem = new CriaturaDaNoite(FindObjectOfType<PersonagemUnity>().getPersonagem());
+            personagem = new CriaturaDaNoite(FindObjectOfType<PersonagemUnity>().getPersonagem(), quantidadeExtra);
     }
     public PersonagemMonstro getPersonagem() { return personagem; }
     public void Atacar(PersonagemUnity[] p)
