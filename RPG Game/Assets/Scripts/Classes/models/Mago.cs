@@ -9,6 +9,7 @@ public sealed class Mago : PersonagemJogador
     public Mago(string nome)
     {
         setNome(nome);
+        atributo.Classe = 2;
         atributo.Hp = 30;
         atributo.MaxHp = atributo.Hp;
         atributo.Mana = 40;

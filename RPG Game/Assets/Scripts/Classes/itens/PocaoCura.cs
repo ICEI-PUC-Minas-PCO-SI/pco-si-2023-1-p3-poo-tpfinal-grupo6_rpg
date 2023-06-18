@@ -1,4 +1,5 @@
-﻿using RpgGame.models;
+﻿using RpgGame.Interface;
+using RpgGame.models;
 
 namespace RpgGame.itens
 {
@@ -6,15 +7,16 @@ namespace RpgGame.itens
     {
         public PocaoCura()
         {
-            nome = "Poção de cura";
+            nome = "Poção de cura restaura o HP em 25%";
+            Id = 1;
         }
-
-        public override void Usar(PersonagemJogador p)
+        public override void Usar(IStatus status)
         {
-            p.atributo.Hp += 25;
-            if (p.atributo.Hp > p.atributo.MaxHp)
+            double recovery = status.atributo.MaxHp * 0.25;
+            status.atributo.Hp += (int)recovery;
+            if (status.atributo.Hp > status.atributo.MaxHp)
             {
-                p.atributo.Hp = p.atributo.MaxHp;
+                status.atributo.Hp = status.atributo.MaxHp;
             }
         }
     }

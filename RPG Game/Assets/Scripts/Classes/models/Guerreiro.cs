@@ -10,6 +10,7 @@ public sealed class Guerreiro : PersonagemJogador
     public Guerreiro(string nome)
     {
         this.setNome(nome);
+        atributo.Classe = 1;
         atributo.Hp = 40;
         atributo.MaxHp = atributo.Hp;
         atributo.Mana = 25;

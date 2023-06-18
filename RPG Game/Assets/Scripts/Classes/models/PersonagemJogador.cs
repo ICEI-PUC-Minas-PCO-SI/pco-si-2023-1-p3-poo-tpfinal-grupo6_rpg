@@ -1,4 +1,5 @@
-﻿using RpgGame.models;
+﻿using RpgGame.Interface;
+using RpgGame.models;
 using RpgGame.view;
 using System.Collections.Generic;
 

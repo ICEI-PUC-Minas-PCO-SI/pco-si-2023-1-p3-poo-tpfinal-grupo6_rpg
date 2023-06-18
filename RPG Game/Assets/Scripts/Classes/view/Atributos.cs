@@ -9,5 +9,6 @@
             public int Mana { get; set; }
             public int MaxMana { get; set; }
             public int Nivel { get; set; }
+            public int Classe { get; set; }
     }
 }

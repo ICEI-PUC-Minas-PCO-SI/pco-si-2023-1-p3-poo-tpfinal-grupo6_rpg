@@ -5,6 +5,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
+using RpgGame.models;
 
 public class Manager : MonoBehaviour
 {
@@ -54,7 +55,6 @@ public class Manager : MonoBehaviour
     PersonagemUnity p1, p2;
     PlayerData playerData;
 
-
     void Awake()
     {
         playerData = FindObjectOfType<PlayerData>();
@@ -81,6 +81,7 @@ public class Manager : MonoBehaviour
         if (p2 != null)
             faceP2.sprite = faces[p2Classe];
         inventarioManager = GetComponent<InventarioManager>();
+        
     }
     private void Update()
     {
@@ -291,4 +292,11 @@ public class Manager : MonoBehaviour
         return players;
     }
     public PlayerData PlayerData { get => playerData; set => playerData = value; }
+    public PersonagemUnity P1 { get => p1; set => p1 = value; }
+    public PersonagemUnity P2 { get => p2; set => p2 = value; }
+    public void movePlayer(bool ativo)
+    {
+        playerMove.enabled = ativo;
+        playerMove.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
 }

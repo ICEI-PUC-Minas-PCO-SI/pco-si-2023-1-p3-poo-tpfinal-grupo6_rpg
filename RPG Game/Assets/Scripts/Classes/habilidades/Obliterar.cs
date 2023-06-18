@@ -1,21 +1,17 @@
 ﻿using RpgGame.models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RpgGame.habilidades
 {
-    internal class Obliterar : Habilidade //Remover
+    internal class Obliterar : Habilidade 
     {
         public Obliterar()
         {
             Nome = "Obliterar";
-            Multiplicador = 2.6;
+            Multiplicador = 2.2;
             Tier = 4;
-            Custo = 25;
-            Dano = 30;
+            ClassType = 2;
+            Nivel = 1;
+            Custo = 120;
         }
     }
 }

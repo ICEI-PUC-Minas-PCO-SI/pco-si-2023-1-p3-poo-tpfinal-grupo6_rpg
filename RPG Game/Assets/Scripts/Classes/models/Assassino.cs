@@ -9,6 +9,7 @@ public sealed class Assassino : PersonagemJogador
     public Assassino(string nome)
     {
         setNome(nome);
+        atributo.Classe = 3;
         atributo.Hp = 25;
         atributo.MaxHp = atributo.Hp;
         atributo.Mana = 25;

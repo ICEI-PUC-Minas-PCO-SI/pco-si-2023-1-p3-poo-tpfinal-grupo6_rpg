@@ -8,6 +8,7 @@ public class PlayerData : MonoBehaviour
 
     void Start()
     {
+        xpMax = 25;
         DontDestroyOnLoad(this.gameObject);
         GameObject aux = FindObjectOfType<MenuPrincipal>().gameObject;
         if (aux != null && !aux.Equals(gameObject))
@@ -25,7 +26,6 @@ public class PlayerData : MonoBehaviour
         {
             level++;
             xp = xp - xpMax;
-            xpMax += 25;
             levelUpDisponivel++;
         }
     }
