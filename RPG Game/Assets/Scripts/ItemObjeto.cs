@@ -2,15 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemObjeto
+public class ItemObjeto : MonoBehaviour
 {
-    private string desc;
-    private int valor;
-    private Sprite img;
-    private bool arma;
+    public string desc;
+    public bool arma;
+    public Vector3 valor; //x = vida; y = mana; z = ataque
+    public Sprite img;
     private PersonagemUnity personagem;
 
-    public ItemObjeto(string desc, int valor, Sprite img, bool arma)
+    public ItemObjeto(string desc, Vector3 valor, Sprite img, bool arma)
     {
         this.desc = desc;
         this.valor = valor;
@@ -19,7 +19,7 @@ public class ItemObjeto
     }
 
     public string Desc { get => desc; set => desc = value; }
-    public int Valor { get => valor; set => valor = value; }
+    public Vector3 Valor { get => valor; set => valor = value; }
     public Sprite Img { get => img; set => img = value; }
     public bool Arma { get => arma; set => arma = value; }
     public PersonagemUnity Personagem { get => personagem; set => personagem = value; }

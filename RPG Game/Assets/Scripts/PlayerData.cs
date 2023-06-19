@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour
 {
     int level, xp, xpMax, levelUpDisponivel;
+    List<ItemObjeto> mochila = new List<ItemObjeto>();
 
     void Start()
     {
@@ -33,4 +34,16 @@ public class PlayerData : MonoBehaviour
     public int Level { get => level; set => level = value; }
     public int Xp { get => xp; set => xp = value; }
     public int XpMax { get => xpMax; set => xpMax = value; }
+    public List<ItemObjeto> Mochila { get => mochila; set => mochila = value; }
+
+    public bool AdicionarItemMochila(ItemObjeto item)
+    {
+        if (mochila.Count < 12)
+        {
+            mochila.Add(item);
+            return true;
+        }
+        else
+            return false;
+    }
 }

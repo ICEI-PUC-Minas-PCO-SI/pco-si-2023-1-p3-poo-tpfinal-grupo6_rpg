@@ -31,10 +31,11 @@ public class InimigoUnity : MonoBehaviour
             personagem = new CriaturaDaNoite(FindObjectOfType<PersonagemUnity>().getPersonagem(), quantidadeExtra);
     }
     public PersonagemMonstro getPersonagem() { return personagem; }
-    public void Atacar(PersonagemUnity[] p)
+    public bool Atacar(PersonagemUnity[] p)
     {
         target = p[Random.Range(0, p.Length)];
         target.getPersonagem().atributo.Hp -= personagem.atributo.Atk;
+        return target.getPersonagem().atributo.Hp <= 0;
     }
     public PersonagemUnity getTarget() { return target; }
     public int getQuantidadeExtra() { return quantidadeExtra; }

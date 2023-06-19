@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
@@ -233,7 +234,8 @@ public class BattleManager : MonoBehaviour
                 else
                 {
                     posicaoInicial = inimigos[inimigoIndex].transform.position;
-                    inimigos[inimigoIndex].Atacar(p);
+                    if(inimigos[inimigoIndex].Atacar(p))
+                        SceneManager.LoadScene(3);
                 }
             }
         }
@@ -246,7 +248,12 @@ public class BattleManager : MonoBehaviour
                 inimigos[targetSelecionadoIndex].transform.position, velMoveAtk * Time.deltaTime);
             if (Vector2.Distance(p[jogadorVez - 1].transform.position, inimigos[targetSelecionadoIndex].transform.position) <= 1.6f)
             {
-                inimigos[targetSelecionadoIndex].getPersonagem().atributo.Hp -= p[jogadorVez - 1].getPersonagem().DarDano(habilidadeSelecionada);
+                float danoArma = 1;
+                if (p[jogadorVez - 1].Arma != null)
+                    danoArma = p[jogadorVez - 1].Arma.valor.z;
+
+                inimigos[targetSelecionadoIndex].getPersonagem().atributo.Hp -= p[jogadorVez - 1].getPersonagem().
+                    DarDano(habilidadeSelecionada, danoArma);
                 StartCoroutine(DanoView(inimigos[targetSelecionadoIndex].GetComponent<SpriteRenderer>()));
                 targetSelecionadoIndex = -1;
             }

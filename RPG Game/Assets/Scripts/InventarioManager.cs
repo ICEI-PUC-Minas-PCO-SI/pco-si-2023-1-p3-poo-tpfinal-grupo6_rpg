@@ -12,7 +12,6 @@ public class InventarioManager : MonoBehaviour
     public Button[] playerSelecionarButton;
     EventSystem eventSystem;
     public Sprite[] iconeItens;
-    public List<ItemObjeto> listaItens = new List<ItemObjeto>();
     Manager manager;
     BattleManager battleManager;
 
@@ -24,27 +23,24 @@ public class InventarioManager : MonoBehaviour
     public Button equipar, voltarInfoView;
 
     //Player
-    public List<ItemObjeto> mochilaPlayer = new List<ItemObjeto>();
     PersonagemUnity[] p;
     public ItemObjeto itemSelecionado;
     public GameObject viewItemP2;
+    PlayerData playerData;
 
     private void Awake()
     {
+        playerData = FindObjectOfType<PlayerData>();
         viewItemP2.SetActive(false);
         battleManager = GetComponent<BattleManager>();
         manager = GetComponent<Manager>();
         p = manager.getPersonagensUnity();
         playerSelecionarButton[1].interactable = manager.getMultiplayer();
         eventSystem = FindObjectOfType<EventSystem>();
-        ConstruirItens();
-        mochilaPlayer.Add(listaItens[0]);
-        mochilaPlayer.Add(listaItens[4]);
-        mochilaPlayer.Add(listaItens[2]);
     }
     void Update()
     {
-        if (!battleManager.InBattle && Input.GetKeyDown("i"))
+        if (!battleManager.InBattle && Input.GetKeyDown("m"))
         {
             if (!hudInventario.activeSelf)
                 AbrirInventario();
@@ -54,10 +50,13 @@ public class InventarioManager : MonoBehaviour
     }
     public void ItemSelecionado(int pos)
     {
-        itemSelecionado = mochilaPlayer[pos];
+        itemSelecionado = playerData.Mochila[pos];
         itemView.sprite = itemSelecionado.Img;
         desc.text = itemSelecionado.Desc;
-        equipar.GetComponentInChildren<TextMeshProUGUI>().text = itemSelecionado.Personagem != null ? "Desequipar" : "Equipar";
+        if (itemSelecionado.arma)
+            equipar.GetComponentInChildren<TextMeshProUGUI>().text = itemSelecionado.Personagem != null ? "Desequipar" : "Equipar";
+        else
+            equipar.GetComponentInChildren<TextMeshProUGUI>().text = "Usar";
         eventSystem.SetSelectedGameObject(voltarInfoView.gameObject);
         infoViewHUD.SetActive(true);
     }
@@ -75,7 +74,7 @@ public class InventarioManager : MonoBehaviour
     }
     public void Descartar()
     {
-        mochilaPlayer.Remove(itemSelecionado);
+        playerData.Mochila.Remove(itemSelecionado);
         if (itemSelecionado.Personagem != null)
             itemSelecionado.Personagem.Arma = null;
         itemSelecionado = null;
@@ -110,10 +109,10 @@ public class InventarioManager : MonoBehaviour
     {
         for(int i = 0; i < localItens.Length; i++)
         {
-            if (i < mochilaPlayer.Count)
+            if (i < playerData.Mochila.Count)
             {
-                localItens[i].sprite = mochilaPlayer[i].Img;
-                if (mochilaPlayer[i].Personagem != null)
+                localItens[i].sprite = playerData.Mochila[i].Img;
+                if (playerData.Mochila[i].Personagem != null)
                     localItens[i].color = new Color(255, 255, 255, 125);
                 else
                     localItens[i].color = new Color(255, 255, 255, 255);
@@ -143,15 +142,6 @@ public class InventarioManager : MonoBehaviour
                 armaP2.gameObject.SetActive(false);
         }
     }
-    public void ConstruirItens()
-    {
-        int i = 0;
-        listaItens.Add(new ItemObjeto("Poção de cura: Cura a vida em +20", 20, iconeItens[i++], false));
-        listaItens.Add(new ItemObjeto("Poção de cura maior: Cura a vida em +50", 50, iconeItens[i++], false));
-        listaItens.Add(new ItemObjeto("Poção de mana: Recupera mana em +30", 30, iconeItens[i++], false));
-        listaItens.Add(new ItemObjeto("Poção de fortalecimento: aumenta o ataque em +10", 10, iconeItens[i++], false));
-        listaItens.Add(new ItemObjeto("Cajado: aumenta o dano em +12", 12, iconeItens[i++], true));
-    }
     public void SelecionarInventario()
     {
         CarregarItensHUD();
@@ -161,25 +151,15 @@ public class InventarioManager : MonoBehaviour
     }
     public void SelecionarPlayerItem(int playerSelecionado)
     {
-        //Equipar arma
-        if (itemSelecionado.Personagem == null)
+        if (itemSelecionado.Arma)
         {
-            if (itemSelecionado.Arma)
-            {
-                p[playerSelecionado].Arma = itemSelecionado;
-                itemSelecionado.Personagem = p[playerSelecionado];
-            }
-            else
-            {
-                p[playerSelecionado].getPersonagem().atributo.Hp += itemSelecionado.Valor;
-                Descartar();
-            }
-            
+            p[playerSelecionado].Arma = itemSelecionado;
+            itemSelecionado.Personagem = p[playerSelecionado];
         }
-        //Desequipar
         else
         {
-            
+            p[playerSelecionado].getPersonagem().UsarItem(itemSelecionado);
+            Descartar();
         }
         CarregarItensHUD();
         SelecionarInventario();

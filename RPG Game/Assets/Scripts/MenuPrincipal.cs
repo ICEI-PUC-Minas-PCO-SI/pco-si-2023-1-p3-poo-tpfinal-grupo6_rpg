@@ -37,6 +37,10 @@ public class MenuPrincipal : MonoBehaviour
         if(playerSelecionado[0] != 0)
             SceneManager.LoadScene(1);
     }
+    public void Creditos()
+    {
+            SceneManager.LoadScene(2);
+    }
     public void Sair()
     {
         Application.Quit();

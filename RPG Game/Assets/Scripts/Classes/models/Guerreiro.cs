@@ -17,7 +17,6 @@ public sealed class Guerreiro : PersonagemJogador
         atributo.MaxMana = atributo.Mana;
         atributo.Atk = 8;
         atributo.Nivel = 1;
-        inventario = new List<Item> { new EspadaMadeira(), new PocaoCura(), new PocaoCura() };
         habilidades = new List<Habilidade> { new CorteRapido() };
     }
     public override void LevelUp()

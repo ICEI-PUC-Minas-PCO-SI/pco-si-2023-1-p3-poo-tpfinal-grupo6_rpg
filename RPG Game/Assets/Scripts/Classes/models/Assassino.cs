@@ -16,7 +16,6 @@ public sealed class Assassino : PersonagemJogador
         atributo.MaxMana = atributo.Mana;
         atributo.Atk = 4;
         atributo.Nivel = 1;
-        inventario = new List<Item> { new AdagasDePedra(), new PocaoCura(), new PocaoCura() };
         habilidades = new List<Habilidade> { new ChuvaDeShuriken(), new OverKill()};
     }
     public override void LevelUp()

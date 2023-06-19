@@ -9,7 +9,7 @@ public class PlayerMove : MonoBehaviour
     float velMove;
     void Start()
     {
-        velMove = 3;
+        velMove = 3.8f;
         rb = GetComponent<Rigidbody2D>();
     }
 
