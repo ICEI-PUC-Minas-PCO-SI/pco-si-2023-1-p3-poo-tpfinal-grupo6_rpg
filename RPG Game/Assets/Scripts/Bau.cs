@@ -6,7 +6,7 @@ public class Bau : MonoBehaviour
 {
     public GameObject interact;
     PlayerData playerData;
-    public ItemObjeto[] listaItens;
+    public GameObject[] listaItens;
 
     private void Start()
     {
@@ -17,8 +17,12 @@ public class Bau : MonoBehaviour
     {
         if (interact.activeSelf && Input.GetButtonDown("Submit"))
         {
-            if(playerData.AdicionarItemMochila(listaItens[Random.Range(0, listaItens.Length)]))
+            GameObject aux = (GameObject) Instantiate(listaItens[Random.Range(0, listaItens.Length)], transform.position, Quaternion.identity);
+            if (playerData.AdicionarItemMochila(aux.GetComponent<ItemObjeto>()))
+            {
+                aux.transform.SetParent(playerData.transform);
                 Destroy(gameObject);
+            }
             interact.SetActive(false);
         }
     }

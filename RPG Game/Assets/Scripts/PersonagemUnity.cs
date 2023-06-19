@@ -49,4 +49,11 @@ public class PersonagemUnity : MonoBehaviour
     public bool getInBattle() { return inBattle; }
     public void setInBattle(bool inBattle) { this.inBattle = inBattle; anim.Play("Direita"); }
     public ItemObjeto Arma { get => arma; set => arma = value; }
+    public float DanoTotal()
+    {
+        if (arma != null)
+            return personagem.atributo.Atk * arma.valor.z;
+        else
+            return personagem.atributo.Atk;
+    }
 }

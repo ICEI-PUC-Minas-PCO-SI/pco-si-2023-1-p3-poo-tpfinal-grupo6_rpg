@@ -8,16 +8,14 @@ using UnityEngine.SceneManagement;
 public class MenuPrincipal : MonoBehaviour
 {
     EventSystem eventSystem;
-    public int[] playerSelecionado = new int[2];
+    int[] playerSelecionado = new int[2];
     public Sprite[] faces;
     public Image[] players;
+    PlayerData playerData;
+
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-        GameObject aux = FindObjectOfType<MenuPrincipal>().gameObject;
-        if (aux != null && !aux.Equals(gameObject))
-            Destroy(aux);
-        
+        playerData = FindObjectOfType<PlayerData>();
         eventSystem = FindObjectOfType<EventSystem>();
         playerSelecionado[0] = 0;
         playerSelecionado[1] = 0;
@@ -34,8 +32,12 @@ public class MenuPrincipal : MonoBehaviour
     }
     public void StartGame()
     {
-        if(playerSelecionado[0] != 0)
+        if (playerSelecionado[0] != 0)
+        {
+            playerData.PlayerSelecionado = playerSelecionado;
+            playerData.Mochila = new List<ItemObjeto>();
             SceneManager.LoadScene(1);
+        }
     }
     public void Creditos()
     {

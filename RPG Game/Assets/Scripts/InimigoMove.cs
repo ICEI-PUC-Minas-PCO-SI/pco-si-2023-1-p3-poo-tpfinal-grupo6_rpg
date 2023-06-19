@@ -7,6 +7,7 @@ public class InimigoMove : MonoBehaviour
     Vector2 inicialPos, targetMove;
     float velMove, velMoveIdle, distanciaMax, tempoEndBattle;
     bool follow, inBattle, endBattle;
+    public bool boss;
     Transform player;
     void Start()
     {

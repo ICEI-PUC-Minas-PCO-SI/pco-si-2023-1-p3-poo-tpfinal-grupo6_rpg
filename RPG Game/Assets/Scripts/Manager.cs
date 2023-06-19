@@ -55,14 +55,15 @@ public class Manager : MonoBehaviour
     PersonagemUnity p1, p2;
     PlayerData playerData;
 
+    public GameObject inimigosBoss;
+
     void Awake()
     {
         playerData = FindObjectOfType<PlayerData>();
-        MenuPrincipal menu = FindObjectOfType<MenuPrincipal>();
-        p1Classe = menu.playerSelecionado[0] - 1;
-        if (menu.playerSelecionado[1] != 0)
+        p1Classe = playerData.PlayerSelecionado[0] - 1;
+        if (playerData.PlayerSelecionado[1] != 0)
         {
-            p2Classe = menu.playerSelecionado[1] - 1;
+            p2Classe = playerData.PlayerSelecionado[1] - 1;
             multiplayer = true;
         }
         battleManager = GetComponent<BattleManager>();
@@ -121,8 +122,7 @@ public class Manager : MonoBehaviour
 
             //Player
             playerPosition = playerMove.transform.position;
-            playerMove.enabled = false;
-            playerMove.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            movePlayer(false);
 
             //Posição em BattleMode
             //Jogadores
@@ -155,7 +155,7 @@ public class Manager : MonoBehaviour
             foreach (InimigoUnity i in inimigosCombate)
                 i.vida.gameObject.SetActive(true);
 
-            battleManager.Battle(inimigosCombate, p1, p2);
+            battleManager.Battle(inimigosCombate, p1, p2, inimigo.boss);
         }
     }
     public void EndBattle(bool inimigoMorto)
@@ -167,8 +167,8 @@ public class Manager : MonoBehaviour
         cam.enabled = true;
         //Player
         playerMove.transform.position = playerPosition;
-        playerMove.enabled = true;
-        if(multiplayer)
+        movePlayer(true);
+        if (multiplayer)
             playerFollow.enabled = true;
         //Inimigo
         if (!inimigoMorto)
@@ -215,6 +215,20 @@ public class Manager : MonoBehaviour
         
         inimigosCombate = new List<InimigoUnity>();
         inimigosCombate.Add(copia.GetComponent<InimigoUnity>());
+    
+        if (inimigo.boss)
+        {
+            GameObject aux = (GameObject)Instantiate(inimigosBoss, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+            aux = (GameObject)Instantiate(inimigosBoss, transform.position, Quaternion.identity);
+            inimigosCombate.Add(aux.GetComponent<InimigoUnity>());
+
+            //Posiciona
+            inimigosCombate[0].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, -1.3f);
+            inimigosCombate[1].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera + 1.8f, 0);
+            inimigosCombate[2].transform.position = (Vector2)cam.transform.position + new Vector2(distanceCamera, 1.3f);
+            return;
+        }
 
         int quantI = inimigo.GetComponent<InimigoUnity>().getQuantidadeExtra();
         if (quantI == 0)
@@ -297,6 +311,7 @@ public class Manager : MonoBehaviour
     public void movePlayer(bool ativo)
     {
         playerMove.enabled = ativo;
+        playerMove.GetComponent<BoxCollider2D>().isTrigger = !ativo;
         playerMove.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 }

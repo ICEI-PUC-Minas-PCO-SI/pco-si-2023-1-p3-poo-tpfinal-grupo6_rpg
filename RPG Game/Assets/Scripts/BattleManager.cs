@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class BattleManager : MonoBehaviour
 {
     public float velTempoAcao, velMoveAtk, tempoInimigoAtk;
-    int turno, jogadorVez, inimigoIndex, habilidadeSelecionada, chanceFugir;
+    int turno, jogadorVez, inimigoIndex, habilidadeSelecionada;
     PersonagemUnity[] p;
     List<InimigoUnity> inimigos;
     bool inBattle, turnoPlayer, turnoInimigo, selecaoInimigo;
@@ -29,6 +29,8 @@ public class BattleManager : MonoBehaviour
     //Jogador
     bool jogadorMove;
     PlayerData playerData;
+
+    bool bossBattle;
 
     void Start()
     {
@@ -142,7 +144,7 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-    public void Battle(List<InimigoUnity> inimigos, PersonagemUnity p1, PersonagemUnity p2)
+    public void Battle(List<InimigoUnity> inimigos, PersonagemUnity p1, PersonagemUnity p2, bool boss)
     {
         if(p2 != null)
         {
@@ -156,15 +158,35 @@ public class BattleManager : MonoBehaviour
             p[0] = p1;
         }
         this.inimigos = inimigos;
-        chanceFugir = 7;
         xpTotal = 0;
         inBattle = true;
         turno = -1;
         jogadorVez = 0;
+        bossBattle = boss;
         ProximoTurno();
     }
     private void ProximoTurno()
     {
+        foreach(PersonagemUnity player in p)
+        {
+            if (player.getPersonagem().atributo.Hp <= 0)
+            {
+                if (p[0].Arma != null)
+                {
+                    p[0].Arma.Personagem = null;
+                    p[0].Arma = null;
+                }
+                if (manager.getMultiplayer())
+                {
+                    if (p[1].Arma != null)
+                    {
+                        p[1].Arma.Personagem = null;
+                        p[1].Arma = null;
+                    }
+                }
+                SceneManager.LoadScene(3);
+            }             
+        }
         if (inBattle)
         {
             turno++;
@@ -234,8 +256,7 @@ public class BattleManager : MonoBehaviour
                 else
                 {
                     posicaoInicial = inimigos[inimigoIndex].transform.position;
-                    if(inimigos[inimigoIndex].Atacar(p))
-                        SceneManager.LoadScene(3);
+                    inimigos[inimigoIndex].Atacar(p);                   
                 }
             }
         }
@@ -308,6 +329,8 @@ public class BattleManager : MonoBehaviour
             foreach (PersonagemUnity p in p)
                 p.setInBattle(false);
         }
+        if(bossBattle)
+            SceneManager.LoadScene(4);
         manager.EndBattle(inimigosMortos);
     }
     public void inimigoMorto(InimigoUnity i) {
@@ -316,7 +339,10 @@ public class BattleManager : MonoBehaviour
     }
     public void Fugir()
     {
-        if (Random.Range(0, 11) >= chanceFugir)
+        int chance = 0;
+        if(!bossBattle)
+            chance = Random.Range(0, 11);
+        if (chance >= 4 && chance <= 5)
         {
             EndBattle();
         }
@@ -329,8 +355,11 @@ public class BattleManager : MonoBehaviour
     private void HabilidadeController()
     {
         PersonagemJogador personagem = p[jogadorVez - 1].getPersonagem();
-        atacarTxtDano.text = personagem.atributo.Atk.ToString();
-        fugirTxt.text = (chanceFugir * 10).ToString();
+        atacarTxtDano.text = ((int)(p[jogadorVez - 1].DanoTotal())).ToString();
+        if(!bossBattle)
+            fugirTxt.text = "20%";
+        else
+            fugirTxt.text = "0%";
 
         foreach (Button b in buttonsHabilidades)
             b.gameObject.SetActive(false);
@@ -340,7 +369,7 @@ public class BattleManager : MonoBehaviour
             buttonsHabilidades[i].gameObject.SetActive(true);
             TextMeshProUGUI[] texts = buttonsHabilidades[i].GetComponentsInChildren<TextMeshProUGUI>();
             texts[0].text = personagem.habilidades[i].Nome;
-            texts[1].text = ((int)(personagem.habilidades[i].Multiplicador * personagem.atributo.Atk * 1.6f)).ToString();
+            texts[1].text = ((int)(personagem.habilidades[i].Multiplicador * p[jogadorVez - 1].DanoTotal() * 1.6f)).ToString();
             texts[2].text = personagem.habilidades[i].Custo.ToString();
         }
     }

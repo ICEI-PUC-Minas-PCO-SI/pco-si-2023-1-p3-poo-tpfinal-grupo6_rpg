@@ -45,7 +45,7 @@ public class InventarioManager : MonoBehaviour
             if (!hudInventario.activeSelf)
                 AbrirInventario();
             else
-                FecharInventario();
+                FecharInventario();         
         }
     }
     public void ItemSelecionado(int pos)
@@ -62,7 +62,7 @@ public class InventarioManager : MonoBehaviour
     }
     public void HUDPersonagem()
     {
-        if (itemSelecionado.Personagem)
+        if (itemSelecionado.Personagem != null)
         {
             itemSelecionado.Personagem.Arma = null;
             itemSelecionado.Personagem = null;
@@ -96,14 +96,14 @@ public class InventarioManager : MonoBehaviour
         hudInventario.SetActive(true);
         SelecionarInventario();
         eventSystem.sendNavigationEvents = true;
-        p[0].GetComponent<PlayerMove>().enabled = false;
+        manager.movePlayer(false);
     }
     public void FecharInventario()
     {
         hudInGame.SetActive(true);
         hudInventario.SetActive(false);
         eventSystem.sendNavigationEvents = false;
-        p[0].GetComponent<PlayerMove>().enabled = true;
+        manager.movePlayer(true);
     }
     void CarregarItensHUD()
     {

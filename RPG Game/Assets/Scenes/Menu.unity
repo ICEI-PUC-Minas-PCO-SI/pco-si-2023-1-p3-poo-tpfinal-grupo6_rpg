@@ -1481,7 +1481,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c164a03504e2e4b89798971a12dc09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSelecionado: 0000000000000000
   faces:
   - {fileID: 21300000, guid: 2fcad39aea70e1e44bc1f4cca3128239, type: 3}
   - {fileID: 21300000, guid: a12406027719811419c1e4fbee4b4170, type: 3}
@@ -2556,10 +2555,10 @@ RectTransform:
   m_Father: {fileID: 1962997030}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.56200004}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -10.869995, y: -52}
-  m_SizeDelta: {x: -195.46, y: 1.68}
+  m_AnchoredPosition: {x: 0, y: 256}
+  m_SizeDelta: {x: -278.5, y: -605.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1015378768
 MonoBehaviour:
@@ -2581,7 +2580,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: End of death
+  m_text: Letter from Zuber
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -2590,8 +2589,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4283867130
-  m_fontColor: {r: 0.9811321, g: 0.62403077, b: 0.33784264, a: 1}
+    rgba: 4282855025
+  m_fontColor: {r: 0.4433962, g: 0.18195978, b: 0.27746344, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2608,12 +2607,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 200
-  m_fontSizeBase: 200
+  m_fontSize: 166.3
+  m_fontSizeBase: 180.7
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 166.3
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -5421,6 +5420,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1990671479
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1990671481}
+  - component: {fileID: 1990671480}
+  m_Layer: 0
+  m_Name: PlayerData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1990671480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990671479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7220b72c44f95de4195cb81525411051, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1990671481
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990671479}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1769.9493, y: 826.3038, z: 7.8831916}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2001831488
 GameObject:
   m_ObjectHideFlags: 0

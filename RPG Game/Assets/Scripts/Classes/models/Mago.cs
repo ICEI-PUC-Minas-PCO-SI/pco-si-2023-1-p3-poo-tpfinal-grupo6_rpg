@@ -16,7 +16,7 @@ public sealed class Mago : PersonagemJogador
         atributo.MaxMana = atributo.Mana;
         atributo.Atk = 6;
         atributo.Nivel = 1;
-        habilidades = new List<Habilidade> { new BolaDeFogo(), new AtaqueMagico(), new Obliterar() };
+        habilidades = new List<Habilidade> { new BolaDeFogo() };
     }
 
     public override void LevelUp()

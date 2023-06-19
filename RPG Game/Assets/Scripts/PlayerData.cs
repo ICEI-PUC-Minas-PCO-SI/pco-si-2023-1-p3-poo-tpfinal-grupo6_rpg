@@ -6,12 +6,15 @@ public class PlayerData : MonoBehaviour
 {
     int level, xp, xpMax, levelUpDisponivel;
     List<ItemObjeto> mochila = new List<ItemObjeto>();
+    private int[] playerSelecionado = new int[2];
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         xpMax = 25;
         DontDestroyOnLoad(this.gameObject);
-        GameObject aux = FindObjectOfType<MenuPrincipal>().gameObject;
+        GameObject aux = FindObjectOfType<PlayerData>().gameObject;
         if (aux != null && !aux.Equals(gameObject))
             Destroy(aux);
     }
@@ -35,6 +38,7 @@ public class PlayerData : MonoBehaviour
     public int Xp { get => xp; set => xp = value; }
     public int XpMax { get => xpMax; set => xpMax = value; }
     public List<ItemObjeto> Mochila { get => mochila; set => mochila = value; }
+    public int[] PlayerSelecionado { get => playerSelecionado; set => playerSelecionado = value; }
 
     public bool AdicionarItemMochila(ItemObjeto item)
     {
