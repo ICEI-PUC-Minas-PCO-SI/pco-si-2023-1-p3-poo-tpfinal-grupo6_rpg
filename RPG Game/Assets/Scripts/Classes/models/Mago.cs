@@ -15,7 +15,7 @@ public sealed class Mago : PersonagemJogador
         atributo.Mana = 40;
         atributo.MaxMana = atributo.Mana;
         atributo.Atk = 6;
-        atributo.Nivel = 1;
+        atributo.Nivel = 0;
         habilidades = new List<Habilidade> { new BolaDeFogo() };
     }
 

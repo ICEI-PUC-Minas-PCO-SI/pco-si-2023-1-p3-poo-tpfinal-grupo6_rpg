@@ -22,13 +22,15 @@ public class DialogoManager : MonoBehaviour
     {
         if (hudDialogo.activeSelf)
         {
-            
-            texto.text = dialogo[linhaAtual];
             if (Input.GetButtonDown("Submit"))
             {
-                linhaAtual++;
                 if (linhaAtual >= dialogo.Length)
+                {
                     Encerrar();
+                    return;
+                }
+                texto.text = dialogo[linhaAtual];
+                linhaAtual++;
             }
         }
     }

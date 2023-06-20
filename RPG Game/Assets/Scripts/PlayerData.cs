@@ -18,17 +18,11 @@ public class PlayerData : MonoBehaviour
         if (aux != null && !aux.Equals(gameObject))
             Destroy(aux);
     }
-    public void SaveGame(int level, int xp)
-    {
-        this.level = level;
-        this.xp = xp;
-    }
     public void SetXp(int xpInserido)
     {
         xp += xpInserido;
         if (xp >= xpMax)
         {
-            level++;
             xp = xp - xpMax;
             levelUpDisponivel++;
         }

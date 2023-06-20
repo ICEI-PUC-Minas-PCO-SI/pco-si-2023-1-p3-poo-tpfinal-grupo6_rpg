@@ -164,8 +164,12 @@ public class LevelUpManager : MonoBehaviour
         manager.getEventSystem().sendNavigationEvents = false;
         hudInGame.SetActive(true);
         manager.movePlayer(true);
-        manager.P1.getPersonagem().LevelUp();
-        if(manager.getMultiplayer())
-            manager.P2.getPersonagem().LevelUp();
+        if(playerData.Level <= manager.P1.getPersonagem().atributo.Nivel)
+        {
+            manager.P1.getPersonagem().LevelUp();
+            playerData.Level++;
+            if (manager.getMultiplayer())
+                manager.P2.getPersonagem().LevelUp();
+        }
     }
 }

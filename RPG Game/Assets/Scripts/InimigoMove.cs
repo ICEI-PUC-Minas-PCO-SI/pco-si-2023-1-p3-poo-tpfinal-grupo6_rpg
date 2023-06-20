@@ -39,9 +39,9 @@ public class InimigoMove : MonoBehaviour
         if (endBattle)
             StartCoroutine(EndBattle());
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !inBattle && !endBattle)
+        if (collision.CompareTag("Player") && !inBattle && !endBattle && !follow)
         {
             if (player == null)
                 player = collision.GetComponent<Transform>();

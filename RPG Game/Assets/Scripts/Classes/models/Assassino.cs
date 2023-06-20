@@ -15,7 +15,7 @@ public sealed class Assassino : PersonagemJogador
         atributo.Mana = 25;
         atributo.MaxMana = atributo.Mana;
         atributo.Atk = 4;
-        atributo.Nivel = 1;
+        atributo.Nivel = 0;
         habilidades = new List<Habilidade> { new ChuvaDeShuriken() };
     }
     public override void LevelUp()

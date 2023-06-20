@@ -178,10 +178,13 @@ public static class Operacoes
         int x = (int)Atk;
         return x;
     }
-    public static int GerarXp(int tier, int nivel)
+    public static int GerarXp(int quantInimigos)
     {
         Random r = new Random();
-        return r.Next(2, 10);
+        if(quantInimigos <= 2)
+            return r.Next(6, 15);
+        else
+            return r.Next(2, 12);
     }
     public static int RealizarFunc(int x, int y, Func<int, int, int> Func) //Uso de delegate
     {

@@ -158,7 +158,7 @@ public class BattleManager : MonoBehaviour
             p[0] = p1;
         }
         this.inimigos = inimigos;
-        xpTotal = 0;
+        xpTotal = Operacoes.GerarXp(inimigos.Count);
         inBattle = true;
         turno = -1;
         jogadorVez = 0;
@@ -171,6 +171,7 @@ public class BattleManager : MonoBehaviour
         {
             if (player.getPersonagem().atributo.Hp <= 0)
             {
+                playerData.LevelUpDisponivel = playerData.Level;
                 if (p[0].Arma != null)
                 {
                     p[0].Arma.Personagem = null;

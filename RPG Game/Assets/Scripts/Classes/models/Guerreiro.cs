@@ -16,7 +16,7 @@ public sealed class Guerreiro : PersonagemJogador
         atributo.Mana = 25;
         atributo.MaxMana = atributo.Mana;
         atributo.Atk = 8;
-        atributo.Nivel = 1;
+        atributo.Nivel = 0;
         habilidades = new List<Habilidade> { new CorteRapido() };
     }
     public override void LevelUp()

@@ -21,16 +21,15 @@ internal class CriaturaDaNoite : PersonagemMonstro
         {
             if (quantidadeExtra <= 1)
             {
-                atk = Random.Range(3, 8);
-                maxHp = Random.Range(10, 25);
+                atk = Random.Range(4, 8);
+                maxHp = Random.Range(16, 35);
             }
             else
             {
-                atk = Random.Range(2, 4);
-                maxHp = Random.Range(5, 15);
+                atk = Random.Range(3, 6);
+                maxHp = Random.Range(10, 25);
             }
         }
-        int xp = Operacoes.RealizarFunc(tier, nivel, Operacoes.GerarXp);
         habilidades = new List<Habilidade>(Operacoes.GerarHab(tier, nivel));
         atributo = new Atributos { Nivel = nivel, MaxHp = maxHp, Hp = maxHp, Atk = atk};
     }
