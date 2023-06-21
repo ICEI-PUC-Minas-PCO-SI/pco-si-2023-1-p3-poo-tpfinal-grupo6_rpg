@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using RpgGame.models;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -86,6 +87,10 @@ public class Manager : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
         animLevelUp.SetBool("LevelUpDisponivel", playerData.LevelUpDisponivel > 0);
         levelSlider.maxValue = playerData.XpMax;
         levelSlider.value = playerData.Xp;
