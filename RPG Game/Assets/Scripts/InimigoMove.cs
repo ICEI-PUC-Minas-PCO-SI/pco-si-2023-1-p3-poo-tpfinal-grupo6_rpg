@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class InimigoMove : MonoBehaviour
 {
-    Vector2 inicialPos, targetMove;
+    Vector2 inicialPos, targetMove, posPerseguir;
     float velMove, velMoveIdle, distanciaMax, tempoEndBattle;
-    bool follow, inBattle, endBattle;
+    bool follow, inBattle, endBattle, voltarInicio;
     public bool boss;
     Transform player;
     void Start()
     {
-        velMove = 5;
-        velMoveIdle = Random.Range(0.5f, 1.2f);
-        distanciaMax = 2.5f;
-        tempoEndBattle = 2;
         inicialPos = transform.position;
         targetMove = new Vector2(Random.Range(inicialPos.x - 5, inicialPos.x + 5), Random.Range(inicialPos.y - 5, inicialPos.y + 5));
+        velMove = 5;
+        velMoveIdle = Random.Range(0.5f, 1.2f);
+        distanciaMax = 2.8f;
+        tempoEndBattle = 2;
     }
     void Update()
     {
@@ -24,14 +24,28 @@ public class InimigoMove : MonoBehaviour
         {
             if (follow)
             {
-                if (Vector2.Distance(transform.position, inicialPos) >= distanciaMax)
-                    follow = false;
-                transform.position = Vector2.MoveTowards(transform.position, player.position, velMove * Time.deltaTime);
+                if (voltarInicio)
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, inicialPos, velMove * Time.deltaTime);
+                    if (Vector2.Distance(transform.position, inicialPos) <= 0.15f)
+                    {
+                        voltarInicio = false;
+                        follow = false;
+                    }
+                }
+                else
+                {
+                    if (Vector2.Distance(transform.position, posPerseguir) > distanciaMax)
+                    {
+                        voltarInicio = true;
+                    }
+                    transform.position = Vector2.MoveTowards(transform.position, player.position, velMove * Time.deltaTime);
+                }
             }
             else
             {
-                if(Vector2.Distance(transform.position, targetMove) <= 0.15f)
-                    targetMove = new Vector2(Random.Range(inicialPos.x - 0.5f, inicialPos.x + 0.5f), 
+                if (Vector2.Distance(transform.position, targetMove) <= 0.15f)
+                    targetMove = new Vector2(Random.Range(inicialPos.x - 0.5f, inicialPos.x + 0.5f),
                         Random.Range(inicialPos.y - 0.5f, inicialPos.y + 0.5f));
                 transform.position = Vector2.MoveTowards(transform.position, targetMove, velMoveIdle * Time.deltaTime);
             }
@@ -41,11 +55,13 @@ public class InimigoMove : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !inBattle && !endBattle && !follow)
+        if (collision.CompareTag("Player") && !inBattle && !endBattle && !follow && !voltarInicio)
         {
+            posPerseguir = transform.position;
             if (player == null)
                 player = collision.GetComponent<Transform>();
             follow = true;
+            voltarInicio = false;
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
