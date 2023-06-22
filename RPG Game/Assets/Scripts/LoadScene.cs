@@ -11,7 +11,7 @@ public class LoadScene : MonoBehaviour
     void Update()
     {
         tempo += Time.deltaTime;
-        if(tempo>= 2)
+        if(tempo>= 4)
             SceneManager.LoadScene(id);
     }
 }
