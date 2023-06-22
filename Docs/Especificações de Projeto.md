@@ -6,10 +6,10 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 |   ID	  |              Descrição do Requisito	                 |
 |:------:|------------------------------------------------------|
-|RNF-001	| Ser responsivo (Adaptar as telas)	    | Alta       |
-|RNF-002	| A navegação deve ser intuitiva e fácil	              |
-|RNF-003	| A interface precisa conter elementos minimalistas	   | 
-|RNF-004	| O site deve ser construído em HTML, CSS e JS	        |
+|RNF-001	| Performance: O jogo deve ter um desempenho adequado, garantindo uma jogabilidade fluída e sem travamentos.      |
+|RNF-002	| Usabilidade: A interface gráfica deve ser amigável e fácil de usar, proporcionando uma experiência agradável aos jogadores.	              |
+|RNF-003	| Documentação: O código fonte do jogo deve ser adequadamente documentado, facilitando a compreensão e manutenção futura	   | 
+|RNF-004	| Testes: O jogo deve ser testado em diferentes cenários e situações, garantindo seu correto funcionamento e identificando possíveis falhas ou bugs	        |
 
 
 ### Requisitos Funcionais
