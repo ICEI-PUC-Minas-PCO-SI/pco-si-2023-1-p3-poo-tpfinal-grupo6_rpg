@@ -24,6 +24,5 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 |RF-006|	Sistema de Inventário: Os jogadores devem ter acesso a um inventário para armazenar e
 gerenciar os itens que coletam ao longo do jogo. Isso inclui equipamentos, poções, pergaminhos,
 entre outros. |
-|RF-007|	 Interação Multiplayer: O jogo pode oferecer a opção de interação multiplayer, permitindo que os jogadores cooperem em missões, batalhas ou participem de competições
- |
+|RF-007|	 Interação Multiplayer: O jogo pode oferecer a opção de interação multiplayer, permitindo que os jogadores cooperem em missões, batalhas ou participem de competições|
 |RF-008|	Interface Gráfica: O jogo pode possuir uma interface gráfica atraente e intuitiva com elementos visuais que ajudem a criar a atmosfera do mundo do jogo. |
