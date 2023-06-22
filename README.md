@@ -22,9 +22,9 @@
 
 # Documentação
 
-- [x] <a href="docs/Documentação de Contexto.md">Documentação de Contexto</a></li>
-- [x] <a href="docs/Especificações de Projeto.md">Especificação do Projeto</a></li>
-- [x] <a href="docs/Gerenciamento de Projeto.md">Gerenciamento de Projeto</a></li>
-- [x] <a href="docs/Projeto de Interface.md">Projeto de Interface</a></li>
-- [x] <a href="docs/Arquitetura da Solução.md">Arquitetura da Solução</a></li>
+- [x] <a href="Docs/Documentação de Contexto.md">Documentação de Contexto</a></li>
+- [x] <a href="Docs/Especificações de Projeto.md">Especificação do Projeto</a></li>
+- [x] <a href="Docs/Gerenciamento de Projeto.md">Gerenciamento de Projeto</a></li>
+- [x] <a href="Docs/Projeto de Interface.md">Projeto de Interface</a></li>
+- [x] <a href="Docs/Arquitetura da Solução.md">Arquitetura da Solução</a></li>
 
