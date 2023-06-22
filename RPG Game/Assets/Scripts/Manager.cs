@@ -89,6 +89,7 @@ public class Manager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            Destroy(FindObjectOfType<PlayerData>());
             SceneManager.LoadScene(0);
         }
         animLevelUp.SetBool("LevelUpDisponivel", playerData.LevelUpDisponivel > 0);

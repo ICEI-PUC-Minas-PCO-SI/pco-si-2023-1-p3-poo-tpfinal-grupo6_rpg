@@ -182,9 +182,9 @@ public static class Operacoes
     {
         Random r = new Random();
         if(quantInimigos <= 2)
-            return r.Next(6, 15);
+            return r.Next(12, 30);
         else
-            return r.Next(2, 12);
+            return r.Next(18, 45);
     }
     public static int RealizarFunc(int x, int y, Func<int, int, int> Func) //Uso de delegate
     {
